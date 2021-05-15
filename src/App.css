@@ -973,6 +973,7 @@ p {
   align-items: center;
   justify-content: center;
   text-align: end;
+  overflow: hidden;
 }
 
 .charts-overimposed > div > div {
@@ -981,6 +982,7 @@ p {
   background: #cfc8ff;
   display: flex;
   justify-content: flex-end;
+  overflow: hidden;
 }
 
 .charts-overimposed p {
