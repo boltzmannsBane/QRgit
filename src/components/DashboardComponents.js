@@ -180,7 +180,7 @@ export const DashboardGoalsDigest = () => {
       <div class="tasks-block grow">
         <h2>Goal Overview</h2>
         <div class="grow">
-          <div class="goal-description">a</div>
+          <div class="goal-description">b</div>
           <GoalOverviewGanttChart />
         </div>
       </div>
