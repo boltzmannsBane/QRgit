@@ -36,10 +36,6 @@
   user-select: none;
 }
 
-*::-webkit-scrollbar {
-  display: none;
-}
-
 html,
 body {
   font-family: -apple-system, "Inter", BlinkMacSystemFont, Segoe UI, Roboto,
@@ -258,8 +254,11 @@ p {
   flex: 1;
   display: flex;
   flex-direction: column;
-
   overflow-y: scroll;
+}
+
+.content-container::-webkit-scrollbar {
+  display: none;
 }
 
 @media screen and (max-width: 768px) {
@@ -905,6 +904,7 @@ p {
 }
 
 .goal-gantt-chart-container {
+  position: relative;
   min-height: 350px !important;
   padding: 0.5rem;
   display: flex;
@@ -912,6 +912,10 @@ p {
   border-radius: 24px;
   border: 1px solid var(--border);
   overflow-x: scroll;
+}
+
+.goal-gantt-chart-container::-webkit-scrollbar {
+  display: none;
 }
 
 .goal-gantt-chart-container > * {
@@ -1002,6 +1006,18 @@ p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.cursor {
+  position: fixed;
+  opacity: 0;
+  min-width: 10px !important;
+  max-width: 10px !important;
+  height: 10px;
+  background: #fff;
+}
+.cursor.active {
+  opacity: 1;
 }
 
 @keyframes tray-appear {

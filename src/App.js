@@ -11,6 +11,7 @@ import {
 } from "./components/DashboardComponents";
 
 function App() {
+
   return (
     <div class="container">
       <Menu />
@@ -21,6 +22,7 @@ function App() {
         <Dashboard />
         {/*        <IssuesScreen /> */}
         <Popup />
+        <div class="cursor" />
       </div>
     </div>
   );

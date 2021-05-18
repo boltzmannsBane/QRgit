@@ -215,31 +215,80 @@ const GoalsDigestGoalRow = ({ state, stroke, dashOffset, handleClick, el }) => {
 const GoalOverviewGanttChart = () => {
   const months = ["Sept", "Oct", "Nov", "Dec", "Jan", "Feb"];
 
+  useEffect(() => {
+    const chart = document.querySelector(".goal-gantt-chart-container");
+    const cursor = document.querySelector(".cursor");
+
+    chart.addEventListener("mousedown", mouseDownHandler);
+    document.addEventListener("mousemove", (e) => {
+      cursor.setAttribute(
+        "style",
+        "top: " + e.clientY + "px; left: " + e.clientY + "px; "
+      );
+    });
+
+    let pos = { top: 0, left: 0, x: 0, y: 0 };
+    let isDown = false;
+
+    function mouseDownHandler(e) {
+      pos = {
+        // The current scroll
+        left: chart.scrollLeft,
+        top: chart.scrollTop,
+        // Get the current mouse position
+        x: e.clientX,
+        y: e.clientY,
+      };
+
+      isDown = true;
+      document.addEventListener("mousemove", mouseMoveHandler);
+      document.addEventListener("mouseup", mouseUpHandler);
+    }
+
+    function mouseMoveHandler(e) {
+      if (!isDown) return;
+      const dx = e.clientX - pos.x;
+      const dy = e.clientY - pos.y;
+
+      // Scroll the element
+      chart.scrollTop = pos.top - dy;
+      chart.scrollLeft = pos.left - dx;
+    }
+
+    function mouseUpHandler() {
+      isDown = false;
+      chart.style.cursor = "grab";
+      chart.style.removeProperty("user-select");
+    }
+  }, []);
+
   return (
-    <div class="goal-gantt-chart-container grow">
-      <div class="labels-row">
-        {months.map((el, i) => (
-          <div class={i === 3 && "active"}>
-            <p>{el}</p>
-          </div>
-        ))}
-      </div>
-      <div class="chart-body grow">
-        <div class="filler" /> <div class="filler" />
-        <div class="filler" /> <div class="filler" />
-        <div class="filler" /> <div class="filler" />
-        <div class="charts-overimposed">
-          {months.map((e, i) => (
-            <div
-              style={{ gridRow: `${i + 1}`, gridColumn: `${i + 1}/${i + 1}` }}
-            >
-              <div class="grow">
-                <p>lsget sm pussy tnit aaaaa</p>
-              </div>
+    <>
+      <div class="goal-gantt-chart-container grow">
+        <div class="labels-row">
+          {months.map((el, i) => (
+            <div class={i === 3 && "active"}>
+              <p>{el}</p>
             </div>
           ))}
         </div>
+        <motion.div class="chart-body grow">
+          <div class="filler" /> <div class="filler" />
+          <div class="filler" /> <div class="filler" />
+          <div class="filler" /> <div class="filler" />
+          <div class="charts-overimposed">
+            {months.map((e, i) => (
+              <div
+                style={{ gridRow: `${i + 1}`, gridColumn: `${i + 1}/${i + 1}` }}
+              >
+                <div class="grow">
+                  <p>lsget sm pussy tnit aaaaa</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </>
   );
 };
