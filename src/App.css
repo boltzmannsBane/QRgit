@@ -978,6 +978,7 @@ p {
   padding: 1rem 0;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: 6 1fr;
+  cursor: none;
 }
 
 .charts-overimposed > div {
@@ -1012,12 +1013,21 @@ p {
   position: fixed;
   opacity: 0;
   min-width: 10px !important;
-  max-width: 10px !important;
   height: 10px;
   background: #fff;
+  pointer-events: none;
+  border-radius: 100%;
+  transition: opacity 0.3s ease-in-out;
 }
 .cursor.active {
-  opacity: 1;
+  opacity: 0.5;
+  width: 20px;
+  height: 20px;
+  transform: scale(1.5);
+}
+.cursor.pressed {
+  opacity: 1 !important;
+  transform: scale(1) !important;
 }
 
 @keyframes tray-appear {

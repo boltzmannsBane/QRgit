@@ -217,16 +217,30 @@ const GoalOverviewGanttChart = () => {
 
   useEffect(() => {
     const chart = document.querySelector(".goal-gantt-chart-container");
+    const gantt = document.querySelector(".charts-overimposed");
     const cursor = document.querySelector(".cursor");
+
+    // custom cursor controls for the gantt chart scroll UX
+    gantt.addEventListener(
+      "mousemove",
+      () =>
+        !cursor.classList.contains("active") && cursor.classList.add("active")
+    );
+    gantt.addEventListener("mouseleave", () =>
+      cursor.classList.remove("active")
+    );
+    gantt.addEventListener("mousedown", () => cursor.classList.add("pressed"));
+    gantt.addEventListener("mouseup", () => cursor.classList.remove("pressed"));
 
     chart.addEventListener("mousedown", mouseDownHandler);
     document.addEventListener("mousemove", (e) => {
       cursor.setAttribute(
         "style",
-        "top: " + e.clientY + "px; left: " + e.clientY + "px; "
+        "top: " + e.clientY + "px; left: " + e.clientX + "px; "
       );
     });
 
+    // hor scroll functionality for the chart's responsiveness
     let pos = { top: 0, left: 0, x: 0, y: 0 };
     let isDown = false;
 
