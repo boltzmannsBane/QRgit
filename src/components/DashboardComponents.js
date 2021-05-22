@@ -120,8 +120,103 @@ function NotificationItem() {
     </div>
   );
 }
+
 export const DashboardOverview = () => {
-  return <></>;
+  return (
+    <div class="dashboard-overview">
+      <GitTopology />
+      <div class="commits">commits</div>
+    </div>
+  );
+};
+
+const gitData = [
+  [0, 1, 0],
+  [0, 1, 0],
+  [0, 1, 0],
+  [0, 1, 0],
+  [0, 1, 0],
+  [0, 1, 0],
+  [0, 1, 0],
+  [3, 1, 0],
+  [1, 1, 0],
+  [4, 1, 0],
+  [1, 1, 0],
+  [4, 1, 3],
+  [1, 1, 1],
+  [1, 1, 1],
+  [3, 1, 1],
+  [1, 1, 1],
+  [1, 1, 1],
+  [3, 1, 4],
+  [1, 1, 1],
+  [3, 1, 3],
+  [1, 1, 1],
+  [3, 1, 1],
+  [1, 1, 1],
+  [1, 1, 3],
+  [4, 1, 1],
+  [1, 1, 1],
+  [1, 1, 1],
+  [3, 1, 4],
+  [1, 1, 1],
+  [3, 1, 1],
+  [1, 1, 3],
+  [1, 1, 1],
+  [2, 1, 3],
+  [0, 1, 1],
+  [0, 1, 2],
+  [0, 1, 0],
+];
+
+const GitTopology = () => {
+  function mapRow(arr) {
+    arr.map((row, index) => mapColumn(row, index));
+  }
+
+  function mapColumn(column, rowIndex) {
+    column.map((col, index) => console.log(rowIndex, read(col)));
+  }
+
+  function read(el) {
+    if (el === 0) console.log("nothing");
+    if (el === 1) console.log("line");
+    if (el === 2) console.log("new branch");
+    if (el === 3) console.log("commit");
+    if (el === 4) console.log("pull request");
+  }
+
+  useEffect(() => mapRow(gitData), []);
+  return (
+    <div class="git-topology">
+      <div class="view-more">
+        <span>
+          <p>branch</p>
+        </span>
+        <div class="spacer"></div>
+        <span>
+          <p>v</p>
+        </span>
+      </div>
+      <div class="lines-container">
+        <div class="branch branch-main"></div>
+        <div class="branch branch-dev"></div>
+        <div class="branch branch-dev2"></div>
+      </div>
+
+      <div class="lines-container">
+        <div class="branch branch-main"></div>
+        <div class="branch branch-dev"></div>
+        <div class="branch branch-dev2"></div>
+      </div>
+
+      <div class="lines-container">
+        <div class="branch branch-main"></div>
+        <div class="branch branch-dev"></div>
+        <div class="branch branch-dev2"></div>
+      </div>
+    </div>
+  );
 };
 
 export const DashboardGoalsDigest = () => {
@@ -180,7 +275,28 @@ export const DashboardGoalsDigest = () => {
       <div class="tasks-block grow">
         <h2>Goal Overview</h2>
         <div class="grow">
-          <div class="goal-description">a</div>
+          <div class="goal-description">
+            <div class="two">
+              <h2>due est. </h2>
+              <h1>~12 days</h1>
+              <div class="is-on-track on-track">
+                <p>
+                  <b>on track</b>
+                </p>
+              </div>
+            </div>
+
+            <div class="spacer" />
+            <div class="body-text">
+              <p>
+                From time to time, I'll open up a document in vim and find that
+                my manual folds are completely messed up. It's like vim decides
+                to ignore its usual markers and, instead, start interpreting
+                random bits of text as being fold points.
+              </p>
+            </div>
+          </div>
+
           <GoalOverviewGanttChart />
         </div>
       </div>

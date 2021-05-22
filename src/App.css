@@ -36,6 +36,10 @@
   user-select: none;
 }
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 html,
 body {
   font-family: -apple-system, "Inter", BlinkMacSystemFont, Segoe UI, Roboto,
@@ -884,18 +888,84 @@ p {
 }
 
 .tasks-block > div:nth-child(2) > * {
-  min-width: 200px;
 }
 
 @media screen and (max-width: 1064px) {
-  .tasks-block div:nth-child(2) > * {
+  .tasks-block > div:nth-child(2) > * {
     width: 100%;
   }
 }
 
 .goal-description {
-  margin-right: 1rem;
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: column;
 }
+.goal-description .spacer {
+  display: none;
+}
+@media screen and (max-width: 1064px) {
+  .goal-description {
+    flex-direction: row;
+  }
+
+  .goal-description .spacer {
+    display: block;
+  }
+}
+@media screen and (max-width: 768px) {
+  .goal-description {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.goal-description h2 {
+  color: var(--text-dark);
+  font-weight: 400;
+  margin-top: 0.5rem;
+  margin-bottom: 0.2rem;
+}
+.goal-description h1 {
+  margin-bottom: 0.7rem;
+}
+.goal-description > .two {
+  align-items: center;
+}
+.is-on-track {
+  margin-right: 0.5rem;
+  text-align: center;
+  padding: 0.3rem 1rem;
+  border-radius: 50px;
+  margin-bottom: 1rem;
+  max-width: 135px;
+}
+.is-on-track.on-track {
+  background: green;
+}
+.goal-description .body-text {
+  max-width: 200px;
+  overflow: hidden;
+}
+.body-text {
+  max-width: 250px;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  .goal-description .spacer,
+  .body-text {
+    display: none;
+  }
+}
+
+.body-text p {
+  color: var(--text-dark);
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+}
+
 @media screen and (max-width: 1064px) {
   .goal-description {
     margin-right: 0;
@@ -1030,6 +1100,56 @@ p {
   transform: scale(1) !important;
 }
 
+.git-topology {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow-y: scroll;
+  background: black;
+  border-radius: 15px;
+  padding: 0 1rem !important;
+}
+.git-topology .view-more {
+  background: rgba(228, 228, 228, 0.1);
+  position: absolute;
+  border-radius: 5px;
+  display: flex;
+  width: 160px;
+  top: 0.5rem;
+  right: 0.5rem;
+  margin-top: 0;
+}
+
+.git-topology .view-more span p {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.lines-container {
+  display: flex;
+}
+
+.branch {
+  width: 3px;
+  height: 25px;
+}
+.branch-main {
+  background: red;
+}
+.branch-dev {
+  background: blue;
+}
+.branch-dev2 {
+  background: green;
+}
+
+.branch + .branch {
+  margin-left: 1rem;
+}
+
 @keyframes tray-appear {
   0% {
     transform: translateY(100%);
@@ -1157,10 +1277,21 @@ p {
   }
 }
 
+.dashboard-overview {
+  background: var(--bg-dark-blueish);
+  border-radius: 24px;
+  padding: 1.3rem 8px;
+  margin-bottom: 1rem;
+  display: flex;
+}
+.dashboard-overview > * {
+  padding: 0.5rem;
+}
+
 .popup-container {
   width: 300px;
   height: auto;
-  position: absolute;
+  position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
   z-index: 1000;
