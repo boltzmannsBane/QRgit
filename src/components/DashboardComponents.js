@@ -131,34 +131,34 @@ export const DashboardOverview = () => {
 };
 
 const gitData = [
-  [0, 1, 0],
-  [0, 1, 0],
-  [0, 1, 0],
-  [0, 1, 0],
-  [0, 1, 0],
+  [0, 3, 0],
   [0, 1, 0],
   [0, 1, 0],
   [3, 1, 0],
   [1, 1, 0],
-  [4, 1, 0],
-  [1, 1, 0],
-  [4, 1, 3],
+  [4, 3, 3],
+  [1, 1, 1],
+  [3, 1, 1],
+  [1, 1, 1],
+  [4, 3, 1],
+  [1, 1, 1],
+  [4, 3, 3],
   [1, 1, 1],
   [1, 1, 1],
   [3, 1, 1],
   [1, 1, 1],
   [1, 1, 1],
-  [3, 1, 4],
+  [3, 3, 4],
   [1, 1, 1],
   [3, 1, 3],
   [1, 1, 1],
   [3, 1, 1],
   [1, 1, 1],
   [1, 1, 3],
-  [4, 1, 1],
+  [4, 3, 1],
   [1, 1, 1],
   [1, 1, 1],
-  [3, 1, 4],
+  [3, 3, 4],
   [1, 1, 1],
   [3, 1, 1],
   [1, 1, 3],
@@ -170,23 +170,37 @@ const gitData = [
 ];
 
 const GitTopology = () => {
-  function mapRow(arr) {
-    arr.map((row, index) => mapColumn(row, index));
+  function read(branchIndex) {
+    return branchesTable[branchIndex];
   }
 
-  function mapColumn(column, rowIndex) {
-    column.map((col, index) => console.log(rowIndex, read(col)));
+  const branchesTable = ["main", "dev", "dev2"];
+  const gitMapElementsTable = (branchIndex, vertIndex) => [
+    <div class="branch" />,
+    <div class={`branch branch-${read(branchIndex, vertIndex)}`} />,
+    "",
+    <div class={`branch branch-${read(branchIndex, vertIndex)}`}>
+      <CommitNode />
+    </div>,
+
+    <div class={`branch branch-${read(branchIndex, vertIndex)}`}>
+      <svg>
+        <path d="M25 0 0 25" stroke-width="3" />
+      </svg>
+    </div>,
+  ];
+  // eh
+  const columns = (arr, vertIndex) =>
+    arr.map((branch, branchIndex) => buildTree(branch, branchIndex, vertIndex));
+
+  const rows = gitData.map((row, index) => (
+    <div class="lines-container">{columns(row)}</div>
+  ));
+
+  function buildTree(val, branchIndex, vertIndex) {
+    return gitMapElementsTable(branchIndex, vertIndex)[val];
   }
 
-  function read(el) {
-    if (el === 0) console.log("nothing");
-    if (el === 1) console.log("line");
-    if (el === 2) console.log("new branch");
-    if (el === 3) console.log("commit");
-    if (el === 4) console.log("pull request");
-  }
-
-  useEffect(() => mapRow(gitData), []);
   return (
     <div class="git-topology">
       <div class="view-more">
@@ -198,25 +212,13 @@ const GitTopology = () => {
           <p>v</p>
         </span>
       </div>
-      <div class="lines-container">
-        <div class="branch branch-main"></div>
-        <div class="branch branch-dev"></div>
-        <div class="branch branch-dev2"></div>
-      </div>
-
-      <div class="lines-container">
-        <div class="branch branch-main"></div>
-        <div class="branch branch-dev"></div>
-        <div class="branch branch-dev2"></div>
-      </div>
-
-      <div class="lines-container">
-        <div class="branch branch-main"></div>
-        <div class="branch branch-dev"></div>
-        <div class="branch branch-dev2"></div>
-      </div>
+      <div class="box">{rows}</div>
     </div>
   );
+};
+
+const CommitNode = () => {
+  return <div class="commit-node"></div>;
 };
 
 export const DashboardGoalsDigest = () => {

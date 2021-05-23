@@ -1102,32 +1102,39 @@ p {
 
 .git-topology {
   position: relative;
+  transform: translateY(0);
   width: 600px;
   height: 600px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   align-items: center;
   overflow-y: scroll;
+  overflow-x: hidden;
   background: black;
   border-radius: 15px;
   padding: 0 1rem !important;
 }
 .git-topology .view-more {
   background: rgba(228, 228, 228, 0.1);
-  position: absolute;
+  position: sticky;
   border-radius: 5px;
   display: flex;
   width: 160px;
   top: 0.5rem;
-  right: 0.5rem;
+  right: -0.5rem;
   margin-top: 0;
+  margin-right: -100%;
 }
 
 .git-topology .view-more span p {
   font-weight: 600;
   color: var(--text-dark);
 }
+
+.lines-container:first-child {
+  margin-top: 50px;
+}
+
 .lines-container {
   display: flex;
 }
@@ -1135,9 +1142,17 @@ p {
 .branch {
   width: 3px;
   height: 25px;
+  position: relative;
+  overflow: visible;
 }
+
+.branch svg {
+  stroke: red;
+}
+
 .branch-main {
   background: red;
+  z-index: 1000;
 }
 .branch-dev {
   background: blue;
@@ -1147,7 +1162,27 @@ p {
 }
 
 .branch + .branch {
-  margin-left: 1rem;
+  margin-left: 25px;
+}
+
+.commit-node {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  background: inherit;
+  top: 0;
+  left: -6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.commit-node::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 100%;
 }
 
 @keyframes tray-appear {
