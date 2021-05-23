@@ -170,26 +170,64 @@ const gitData = [
 ];
 
 const GitTopology = () => {
+  //eh
   function read(branchIndex) {
     return branchesTable[branchIndex];
   }
-
+  const colors = ["red", "blue", "green"];
   const branchesTable = ["main", "dev", "dev2"];
   const gitMapElementsTable = (branchIndex, vertIndex) => [
+    // 0 - "nothing"
     <div class="branch" />,
+
+    // 1 - "normal"
     <div class={`branch branch-${read(branchIndex, vertIndex)}`} />,
-    "",
+
+    // 2 - "branch created"
+    <div
+      class={`branch branch-${read(branchIndex, vertIndex)} birth ${
+        branchIndex > 1 && "reverse"
+      }`}
+    >
+      <CommitNode />
+      <svg>
+        <defs>
+          <linearGradient
+            id={`linear-${branchIndex}`}
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" stop-color="blue" />
+            <stop offset="100%" stop-color={colors[branchIndex]} />
+          </linearGradient>
+        </defs>
+        <path
+          stroke={`url(#linear-${branchIndex})`}
+          d="M25 5  -5 25"
+          stroke-width="3"
+        />
+      </svg>
+    </div>,
+
+    // 3 - "a commit node"
     <div class={`branch branch-${read(branchIndex, vertIndex)}`}>
       <CommitNode />
     </div>,
 
-    <div class={`branch branch-${read(branchIndex, vertIndex)}`}>
+    // 4 - "pull request"
+    <div
+      class={`branch branch-${read(branchIndex, vertIndex)} ${
+        branchIndex > 1 && "reverse"
+      }`}
+    >
       <svg>
-        <path d="M25 0 0 25" stroke-width="3" />
+        <path d="M25 5  0 25" stroke-width="2" stroke={colors[branchIndex]} />
       </svg>
     </div>,
   ];
-  // eh
+
   const columns = (arr, vertIndex) =>
     arr.map((branch, branchIndex) => buildTree(branch, branchIndex, vertIndex));
 

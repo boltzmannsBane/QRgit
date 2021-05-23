@@ -1147,13 +1147,32 @@ p {
 }
 
 .branch svg {
-  stroke: red;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  overflow: visible;
+  z-index: -1000;
+}
+
+.branch.reverse svg {
+  right: 0;
+  transform: rotateY(180deg);
+}
+
+.branch.birth svg {
+  bottom: -20px;
+  transform: scale(-1, 1);
+}
+
+.branch.reverse.birth svg {
+  transform: scale(-1, 1) rotateY(180deg);
 }
 
 .branch-main {
   background: red;
   z-index: 1000;
 }
+
 .branch-dev {
   background: blue;
 }
@@ -1176,6 +1195,8 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  z-index: 1000;
 }
 .commit-node::after {
   content: "";
