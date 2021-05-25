@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NotifsIcon, ProfileIcon, DoughnutChart } from "./SVGs.js";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const UserMenuButtons = () => {
   const [state, setState] = useState(false);
@@ -131,65 +131,126 @@ export const DashboardOverview = () => {
 };
 
 const gitData = [
-  [0, 3, 0],
-  [0, 1, 0],
-  [0, 1, 0],
-  [3, 1, 0],
-  [1, 1, 0],
-  [4, 3, 3],
-  [1, 1, 1],
-  [3, 1, 1],
-  [1, 1, 1],
-  [4, 3, 1],
-  [1, 1, 1],
-  [4, 3, 3],
-  [1, 1, 1],
-  [1, 1, 1],
-  [3, 1, 1],
-  [1, 1, 1],
-  [1, 1, 1],
-  [3, 3, 4],
-  [1, 1, 1],
-  [3, 1, 3],
-  [1, 1, 1],
-  [3, 1, 1],
-  [1, 1, 1],
-  [1, 1, 3],
-  [4, 3, 1],
-  [1, 1, 1],
-  [1, 1, 1],
-  [3, 3, 4],
-  [1, 1, 1],
-  [3, 1, 1],
-  [1, 1, 3],
-  [1, 1, 1],
-  [2, 1, 3],
-  [0, 1, 1],
-  [0, 1, 2],
-  [0, 1, 0],
+  [0, 0, 3, 0, 0],
+  [0, 0, 1, 0, 0],
+  [3, 0, 1, 0, 3],
+  [1, 3, 1, 0, 1],
+  [1, 1, 1, 0, 1],
+  [3, 4, 3, 3, 1],
+  [1, 1, 1, 1, 3],
+  [1, 3, 1, 1, 1],
+  [3, 1, 1, 1, 1],
+  [1, 4, 3, 1, 1],
+  [1, 1, 1, 1, 1],
+  [1, 4, 3, 3, 3],
+  [3, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1],
+  [4, 3, 1, 3, 4],
+  [1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1],
+  [4, 3, 3, 4, 3],
+  [3, 1, 1, 1, 1],
+  [1, 3, 1, 3, 1],
+  [1, 1, 1, 1, 3],
+  [1, 3, 1, 1, 1],
+  [3, 1, 1, 1, 1],
+  [1, 1, 1, 3, 3],
+  [1, 4, 3, 1, 1],
+  [1, 1, 1, 3, 4],
+  [1, 1, 1, 1, 1],
+  [1, 3, 3, 4, 2],
+  [2, 1, 1, 1, 0],
+  [0, 1, 1, 1, 0],
+  [0, 1, 1, 2, 0],
+  [0, 1, 1, 0, 0],
+  [0, 2, 1, 0, 0],
+  [0, 0, 1, 0, 0],
+  [0, 0, 1, 0, 0],
+  [0, 0, 1, 0, 0],
 ];
 
 const GitTopology = () => {
   //eh
-  function read(branchIndex) {
-    return branchesTable[branchIndex];
-  }
-  const colors = ["red", "blue", "green"];
-  const branchesTable = ["main", "dev", "dev2"];
+
+  const commits = [
+    {
+      hash: "35e32b6a00dec02ae7d7c45c6b7106779a124685",
+      date: "10.12.2021",
+      message:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    },
+  ];
+
+  useEffect(() => {
+    const gitMap = document.querySelector(".git-topology");
+    const cursor = document.querySelector(".cursor");
+
+    gitMap.addEventListener(
+      "mousemove",
+      () =>
+        !cursor.classList.contains("active") && cursor.classList.add("active")
+    );
+    gitMap.addEventListener("mouseleave", () => {
+      cursor.classList.remove("active");
+
+      cursor.classList.remove("pressed");
+    });
+    gitMap.addEventListener("mousedown", () => cursor.classList.add("pressed"));
+    gitMap.addEventListener("mouseup", () =>
+      cursor.classList.remove("pressed")
+    );
+
+    gitMap.addEventListener("mousedown", mouseDownHandler);
+    document.addEventListener("mousemove", (e) => {
+      cursor.setAttribute(
+        "style",
+        "top:  " + (e.clientY - 10) + "px; left: " + (e.clientX - 10) + "px; "
+      );
+    });
+
+    let pos = { top: 0, left: 0, x: 0, y: 0 };
+    let isDown = false;
+
+    function mouseDownHandler(e) {
+      pos = {
+        // The current scroll
+        top: gitMap.scrollTop,
+        // Get the current mouse position
+        y: e.clientY,
+      };
+
+      isDown = true;
+      document.addEventListener("mousemove", mouseMoveHandler);
+      document.addEventListener("mouseup", mouseUpHandler);
+    }
+
+    function mouseMoveHandler(e) {
+      if (!isDown) return;
+      const dy = e.clientY - pos.y;
+
+      // Scroll the element
+      gitMap.scrollTop = pos.top - dy;
+    }
+
+    function mouseUpHandler() {
+      isDown = false;
+    }
+  }, []);
+
+  const colors = ["red", "blue", "green", "pink", "orange"];
   const gitMapElementsTable = (branchIndex, vertIndex) => [
     // 0 - "nothing"
     <div class="branch" />,
 
     // 1 - "normal"
-    <div class={`branch branch-${read(branchIndex, vertIndex)}`} />,
+    <div style={{ background: `${colors[branchIndex]}` }} class={`branch `} />,
 
     // 2 - "branch created"
     <div
-      class={`branch branch-${read(branchIndex, vertIndex)} birth ${
-        branchIndex > 1 && "reverse"
-      }`}
+      style={{ background: `${colors[branchIndex]}` }}
+      class={`branch  birth ${branchIndex > 1 && "reverse"}`}
     >
-      <CommitNode />
+      <CommitNode data={commits[0]} />
       <svg>
         <defs>
           <linearGradient
@@ -199,7 +260,14 @@ const GitTopology = () => {
             x2="100%"
             y2="0%"
           >
-            <stop offset="0%" stop-color="blue" />
+            <stop
+              offset="0%"
+              stop-color={
+                branchIndex > 2
+                  ? colors[branchIndex - 1]
+                  : colors[branchIndex + 1]
+              }
+            />
             <stop offset="100%" stop-color={colors[branchIndex]} />
           </linearGradient>
         </defs>
@@ -212,18 +280,20 @@ const GitTopology = () => {
     </div>,
 
     // 3 - "a commit node"
-    <div class={`branch branch-${read(branchIndex, vertIndex)}`}>
-      <CommitNode />
+    <div
+      style={{ background: `${colors[branchIndex]}` }}
+      class={`branch ${branchIndex > 1 && "reverse"}`}
+    >
+      <CommitNode data={commits[0]} />
     </div>,
 
     // 4 - "pull request"
     <div
-      class={`branch branch-${read(branchIndex, vertIndex)} ${
-        branchIndex > 1 && "reverse"
-      }`}
+      class={`branch  ${branchIndex > 1 && "reverse"}`}
+      style={{ background: `${colors[branchIndex]}` }}
     >
       <svg>
-        <path d="M25 5  0 25" stroke-width="2" stroke={colors[branchIndex]} />
+        <path d="M25 5  0 25" stroke-width="3" stroke={colors[branchIndex]} />
       </svg>
     </div>,
   ];
@@ -232,7 +302,10 @@ const GitTopology = () => {
     arr.map((branch, branchIndex) => buildTree(branch, branchIndex, vertIndex));
 
   const rows = gitData.map((row, index) => (
-    <div class="lines-container">{columns(row)}</div>
+    <div class="lines-container">
+      {columns(row)}
+      <div class="ruler" />
+    </div>
   ));
 
   function buildTree(val, branchIndex, vertIndex) {
@@ -251,12 +324,48 @@ const GitTopology = () => {
         </span>
       </div>
       <div class="box">{rows}</div>
+      <div class="penis" />
     </div>
   );
 };
 
-const CommitNode = () => {
-  return <div class="commit-node"></div>;
+const CommitNode = ({ data }) => {
+  const [hovered, setHovered] = useState(false);
+
+  function makeid(length) {
+    var result = [];
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result.push(
+        characters.charAt(Math.floor(Math.random() * charactersLength))
+      );
+    }
+    return result.join("");
+  }
+  return (
+    <div
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      class="commit-node"
+      id={makeid(6)}
+    >
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            class={`commit-description `}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {" "}
+            <div>
+              <p>{data.date}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export const DashboardGoalsDigest = () => {
@@ -389,12 +498,6 @@ const GoalOverviewGanttChart = () => {
     gantt.addEventListener("mouseup", () => cursor.classList.remove("pressed"));
 
     chart.addEventListener("mousedown", mouseDownHandler);
-    document.addEventListener("mousemove", (e) => {
-      cursor.setAttribute(
-        "style",
-        "top: " + e.clientY + "px; left: " + e.clientX + "px; "
-      );
-    });
 
     // hor scroll functionality for the chart's responsiveness
     let pos = { top: 0, left: 0, x: 0, y: 0 };
