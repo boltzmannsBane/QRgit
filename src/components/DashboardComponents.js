@@ -237,7 +237,7 @@ const GitTopology = () => {
     }
   }, []);
 
-  const colors = ["red", "blue", "green", "pink", "orange"];
+  const colors = ["#F8DA30", "#7630F8", "#F7304D", "#7630F8", "#30F8DA"];
   const gitMapElementsTable = (branchIndex, vertIndex) => [
     // 0 - "nothing"
     <div class="branch" />,
@@ -324,13 +324,15 @@ const GitTopology = () => {
         </span>
       </div>
       <div class="box">{rows}</div>
-      <div class="penis" />
     </div>
   );
 };
 
 const CommitNode = ({ data }) => {
   const [hovered, setHovered] = useState(false);
+  const [active, setActive] = useState(false);
+
+  const id = makeid(6);
 
   function makeid(length) {
     var result = [];
@@ -344,12 +346,29 @@ const CommitNode = ({ data }) => {
     }
     return result.join("");
   }
+
+  useEffect(() => {
+    // select a current node
+    const node = document.getElementById(id);
+    // handle click on that node
+    node.addEventListener("click", () => {
+      //create a list of active nodes
+      const activeNodes = document.getElementsByClassName("commit-node active");
+      // convert HTML collection into a mappable array
+      const activeNodesArray = Array.from(activeNodes);
+      // remove active class from the old nodes
+      activeNodesArray !== [] &&
+        activeNodesArray.map((el) => el.classList.remove("active"));
+      // add active class to the current node
+      !node.classList.contains("active") && node.classList.add("active");
+    });
+  }, []);
   return (
     <div
       onMouseOver={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      class="commit-node"
-      id={makeid(6)}
+      class={`commit-node `}
+      id={id}
     >
       <AnimatePresence>
         {hovered && (

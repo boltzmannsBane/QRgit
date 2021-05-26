@@ -1100,6 +1100,12 @@ p {
   transform: scale(1) !important;
 }
 
+@media screen and (max-width: 1064px) {
+  .cursor {
+    display: none;
+  }
+}
+
 .git-topology {
   position: relative;
   transform: translateY(0);
@@ -1114,6 +1120,18 @@ p {
   border-radius: 15px;
   padding: 0 !important;
 }
+
+.commit-details-card {
+  position: sticky;
+  width: 100% !important;
+  min-height: 100px !important;
+  border-radius: 10px;
+  background: rgba(128, 128, 128, 0.3);
+  backdrop-filter: blur(20px);
+  bottom: 0;
+  left: 0;
+}
+
 .git-topology .view-more {
   background: rgba(228, 228, 228, 0.1);
   position: sticky;
@@ -1210,6 +1228,22 @@ p {
   justify-content: center;
   align-items: center;
 }
+
+.commit-node::before {
+  position: absolute;
+  opacity: 0;
+  width: 140%;
+  height: 140%;
+  content: "";
+  background: white;
+  border-radius: 100%;
+  z-index: -100;
+  transition: 0.3s ease-in-out;
+}
+.commit-node.active::before {
+  opacity: 1;
+}
+
 .commit-node::after {
   content: "";
   width: 5px;
