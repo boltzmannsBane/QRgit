@@ -54,14 +54,7 @@ export const UserMenuButtons = () => {
       >
         <NotifsIcon />
         <div class={`notification-indicator ${!NIS && "hidden"}`} />
-        <motion.div
-          layout
-          drag={window.innerWidth <= 820 && "y"}
-          dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
-          dragElastic={0.9}
-          onDragEnd={(event, info) => {
-            info.offset.y > 300 && handleTraySwipeDown();
-          }}
+        <div
           class={`tray notifications-tray ${openTray("notifications-button")}`}
           onClick={(e) => e.stopPropagation()}
         >
@@ -77,7 +70,7 @@ export const UserMenuButtons = () => {
           >
             <b>View More</b>
           </button>
-        </motion.div>
+        </div>
       </button>
 
       <button
@@ -122,11 +115,83 @@ function NotificationItem() {
 }
 
 export const DashboardOverview = () => {
+  const [activeCommit, setActiveCommit] = useState("");
   return (
     <div class="dashboard-overview">
-      <GitTopology />
-      <div class="commits">commits</div>
+      <h2>Repo's Git History</h2>
+      <GitTopology setActiveCommit={setActiveCommit} />
+      <div class="commits grow">
+        <div class="commit-info">
+          <h2>
+            <span class="details">commit</span>
+            <span class="hash">{activeCommit}</span>
+          </h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </p>
+        </div>
+        <div class="commit-overview"></div>
+        <div class="commit-body">
+          <pre>
+            <code>
+              <CommitBody />
+            </code>
+          </pre>
+        </div>
+      </div>
     </div>
+  );
+};
+
+const CommitBody = () => {
+  const mockData = () => {
+    let i = 0;
+    let arr = [];
+    for (i; i <= 20; i++) {
+      arr.push(i);
+    }
+    return arr;
+  };
+  let i = 1000;
+
+  const additions = mockData().map(() => {
+    i++;
+    if (i > 1008 && i < 1016)
+      return (
+        <p class="addition">
+          <span>{i} +</span>
+          {`Lorem Ipsum = () => {Dolor Si Amet}`}
+        </p>
+      );
+    return (
+      <p>
+        <span>{i}</span> Lorem Ipsum
+      </p>
+    );
+  });
+
+  const removals = mockData().map(() => {
+    i++;
+    if (i > 1028 && i < 1034)
+      return (
+        <p class="removal">
+          <span>{i} -</span>
+          {`Lorem Ipsum = () => {Dolor Si Amet}`}
+        </p>
+      );
+    return (
+      <p>
+        <span>{i}</span> Lorem Ipsum
+      </p>
+    );
+  });
+
+  return (
+    <>
+      <div class="additions">{additions}</div>
+      <div class="removals">{removals}</div>
+    </>
   );
 };
 
@@ -169,7 +234,7 @@ const gitData = [
   [0, 0, 1, 0, 0],
 ];
 
-const GitTopology = () => {
+const GitTopology = ({ setActiveCommit }) => {
   //eh
 
   const commits = [
@@ -250,7 +315,7 @@ const GitTopology = () => {
       style={{ background: `${colors[branchIndex]}` }}
       class={`branch  birth ${branchIndex > 1 && "reverse"}`}
     >
-      <CommitNode data={commits[0]} />
+      <CommitNode setActiveCommit={setActiveCommit} data={commits[0]} />
       <svg>
         <defs>
           <linearGradient
@@ -284,7 +349,7 @@ const GitTopology = () => {
       style={{ background: `${colors[branchIndex]}` }}
       class={`branch ${branchIndex > 1 && "reverse"}`}
     >
-      <CommitNode data={commits[0]} />
+      <CommitNode setActiveCommit={setActiveCommit} data={commits[0]} />
     </div>,
 
     // 4 - "pull request"
@@ -293,7 +358,30 @@ const GitTopology = () => {
       style={{ background: `${colors[branchIndex]}` }}
     >
       <svg>
-        <path d="M25 5  0 25" stroke-width="3" stroke={colors[branchIndex]} />
+        <defs>
+          <linearGradient
+            id={`linear-1${branchIndex}`}
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="0%"
+          >
+            <stop offset="0%" stop-color={colors[branchIndex]} />
+            <stop
+              offset="100%"
+              stop-color={
+                branchIndex > 2
+                  ? colors[branchIndex - 1]
+                  : colors[branchIndex + 1]
+              }
+            />
+          </linearGradient>
+        </defs>
+        <path
+          d="M25 5  0 25"
+          stroke-width="3"
+          stroke={`url(#linear-1${branchIndex})`}
+        />
       </svg>
     </div>,
   ];
@@ -312,23 +400,124 @@ const GitTopology = () => {
     return gitMapElementsTable(branchIndex, vertIndex)[val];
   }
 
+  const [open, setOpen] = useState(false);
+
   return (
-    <div class="git-topology">
-      <div class="view-more">
+    <div onClick={() => setOpen(false)} class="git-topology">
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen((prevState) => !prevState);
+        }}
+        class={`view-more `}
+      >
         <span>
           <p>branch</p>
         </span>
         <div class="spacer"></div>
         <span>
-          <p>v</p>
+          <div class="dropdown-indicator" data-isopen={open}>
+            <div class="one" />
+            <div class="two" />
+          </div>
         </span>
+        <div class={`tray ${open ? "open" : "closed"}`}>
+          <div class="notification-item">
+            <b>master</b>
+            <div class="spacer" />
+
+            <svg
+              width="30"
+              height="30"
+              viewBox="5 5 30 30"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#F7304D"
+            >
+              <title />
+              <g id="Git">
+                <path d="M31.55,18.93,21.07,8.45a1.56,1.56,0,0,0-2.19,0l-2.17,2.18,2.76,2.76a1.83,1.83,0,0,1,2.32,2.34l2.66,2.66a1.84,1.84,0,1,1-.7,3,1.85,1.85,0,0,1-.4-2L20.87,17v6.52a2,2,0,0,1,.48.35,1.85,1.85,0,1,1-2-.4V16.83a1.82,1.82,0,0,1-1-2.41L15.64,11.7,8.45,18.88a1.56,1.56,0,0,0,0,2.19L18.93,31.55a1.56,1.56,0,0,0,2.19,0L31.55,21.12a1.56,1.56,0,0,0,0-2.19" />
+              </g>
+            </svg>
+          </div>
+          <div class="notification-item">
+            <b>dev-original</b>
+            <div class="spacer" />
+
+            <svg
+              width="30"
+              height="30"
+              viewBox="5 5 30 30"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#7630F8"
+            >
+              <title />
+              <g id="Git">
+                <path d="M31.55,18.93,21.07,8.45a1.56,1.56,0,0,0-2.19,0l-2.17,2.18,2.76,2.76a1.83,1.83,0,0,1,2.32,2.34l2.66,2.66a1.84,1.84,0,1,1-.7,3,1.85,1.85,0,0,1-.4-2L20.87,17v6.52a2,2,0,0,1,.48.35,1.85,1.85,0,1,1-2-.4V16.83a1.82,1.82,0,0,1-1-2.41L15.64,11.7,8.45,18.88a1.56,1.56,0,0,0,0,2.19L18.93,31.55a1.56,1.56,0,0,0,2.19,0L31.55,21.12a1.56,1.56,0,0,0,0-2.19" />
+              </g>
+            </svg>
+          </div>
+          <div class="notification-item">
+            <b>dev2</b>
+
+            <div class="spacer" />
+
+            <svg
+              width="30"
+              height="30"
+              viewBox="5 5 30 30"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#F8DA30"
+            >
+              <title />
+              <g id="Git">
+                <path d="M31.55,18.93,21.07,8.45a1.56,1.56,0,0,0-2.19,0l-2.17,2.18,2.76,2.76a1.83,1.83,0,0,1,2.32,2.34l2.66,2.66a1.84,1.84,0,1,1-.7,3,1.85,1.85,0,0,1-.4-2L20.87,17v6.52a2,2,0,0,1,.48.35,1.85,1.85,0,1,1-2-.4V16.83a1.82,1.82,0,0,1-1-2.41L15.64,11.7,8.45,18.88a1.56,1.56,0,0,0,0,2.19L18.93,31.55a1.56,1.56,0,0,0,2.19,0L31.55,21.12a1.56,1.56,0,0,0,0-2.19" />
+              </g>
+            </svg>
+          </div>
+          <div class="notification-item">
+            <b>dev3</b>
+
+            <div class="spacer" />
+
+            <svg
+              width="30"
+              height="30"
+              viewBox="5 5 30 30"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#7630F8"
+            >
+              <title />
+              <g id="Git">
+                <path d="M31.55,18.93,21.07,8.45a1.56,1.56,0,0,0-2.19,0l-2.17,2.18,2.76,2.76a1.83,1.83,0,0,1,2.32,2.34l2.66,2.66a1.84,1.84,0,1,1-.7,3,1.85,1.85,0,0,1-.4-2L20.87,17v6.52a2,2,0,0,1,.48.35,1.85,1.85,0,1,1-2-.4V16.83a1.82,1.82,0,0,1-1-2.41L15.64,11.7,8.45,18.88a1.56,1.56,0,0,0,0,2.19L18.93,31.55a1.56,1.56,0,0,0,2.19,0L31.55,21.12a1.56,1.56,0,0,0,0-2.19" />
+              </g>
+            </svg>
+          </div>
+          <div class="notification-item">
+            <b>dev4</b>
+
+            <div class="spacer" />
+
+            <svg
+              width="30"
+              height="30"
+              viewBox="5 5 30 30"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#30F8DA"
+            >
+              <title />
+              <g id="Git">
+                <path d="M31.55,18.93,21.07,8.45a1.56,1.56,0,0,0-2.19,0l-2.17,2.18,2.76,2.76a1.83,1.83,0,0,1,2.32,2.34l2.66,2.66a1.84,1.84,0,1,1-.7,3,1.85,1.85,0,0,1-.4-2L20.87,17v6.52a2,2,0,0,1,.48.35,1.85,1.85,0,1,1-2-.4V16.83a1.82,1.82,0,0,1-1-2.41L15.64,11.7,8.45,18.88a1.56,1.56,0,0,0,0,2.19L18.93,31.55a1.56,1.56,0,0,0,2.19,0L31.55,21.12a1.56,1.56,0,0,0,0-2.19" />
+              </g>
+            </svg>
+          </div>
+        </div>
       </div>
       <div class="box">{rows}</div>
     </div>
   );
 };
 
-const CommitNode = ({ data }) => {
+const CommitNode = ({ data, setActiveCommit }) => {
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
 
@@ -369,6 +558,7 @@ const CommitNode = ({ data }) => {
       onMouseLeave={() => setHovered(false)}
       class={`commit-node `}
       id={id}
+      onClick={() => setActiveCommit(id)}
     >
       <AnimatePresence>
         {hovered && (
@@ -401,35 +591,35 @@ export const DashboardGoalsDigest = () => {
       <div class="goals-block">
         <h2>Your Goals</h2>{" "}
         <GoalsDigestGoalRow
-          stroke={"#ba5ce6"}
+          stroke={0}
           dashOffset={30}
           handleClick={handleClick}
           el={1}
           state={activeGoal}
         />
         <GoalsDigestGoalRow
-          stroke={"#5cb5e6"}
+          stroke={1}
           dashOffset={70}
           handleClick={handleClick}
           el={2}
           state={activeGoal}
         />
         <GoalsDigestGoalRow
-          stroke={"#e6ba5c"}
+          stroke={2}
           dashOffset={50}
           handleClick={handleClick}
           el={3}
           state={activeGoal}
         />
         <GoalsDigestGoalRow
-          stroke={"#5cb5e6"}
+          stroke={3}
           dashOffset={81}
           handleClick={handleClick}
           el={4}
           state={activeGoal}
         />
         <GoalsDigestGoalRow
-          stroke={"#ba5ce6"}
+          stroke={4}
           dashOffset={90}
           handleClick={handleClick}
           el={5}
@@ -477,6 +667,7 @@ const GoalsDigestGoalRow = ({ state, stroke, dashOffset, handleClick, el }) => {
     if (state === el) return "active";
   }
 
+  const colors = ["#F8DA30", "#7630F8", "#F7304D", "#7630F8", "#30F8DA"];
   return (
     <div
       class={`goal-row ${checkActiveGoal(el, state)}`}
@@ -489,7 +680,7 @@ const GoalsDigestGoalRow = ({ state, stroke, dashOffset, handleClick, el }) => {
       </div>
       <div class="spacer" />
       <div>
-        <DoughnutChart stroke={stroke} dashOffset={dashOffset} />
+        <DoughnutChart stroke={colors[stroke]} dashOffset={dashOffset} />
         <p>{dashOffset}%</p>
       </div>
     </div>

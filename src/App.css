@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@impor url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 :root {
   font-size: calc(1rem + 0.5vw);
@@ -728,7 +728,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  top: 2.3rem;
+  top: 56px;
   right: 0;
   padding: 0.2rem;
   border-radius: 15px;
@@ -741,26 +741,11 @@ p {
   opacity: 0;
   visibility: hidden;
 }
-
 @media screen and (max-width: 768px) {
   .tray {
-    position: fixed !important;
-    opacity: 1;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw;
-    min-height: 120vh;
-    border-radius: 40px;
-    transform: translateY(0%);
-  }
-  .tray.closed {
-    transition: 0.4s ease-in-out;
-    transform: translateY(100%);
-    opacity: 1;
-    visibility: visible;
+    top: 128px;
   }
 }
-
 .grow {
   flex: 1;
 }
@@ -940,8 +925,11 @@ p {
   margin-bottom: 1rem;
   max-width: 135px;
 }
+.is-on-track p {
+  color: black;
+}
 .is-on-track.on-track {
-  background: green;
+  background: #30f8da;
 }
 .goal-description .body-text {
   max-width: 200px;
@@ -1006,22 +994,17 @@ p {
   align-items: center;
 }
 
-.labels-row p:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
 .labels-row p {
   padding: 0.2rem 0.3rem;
   font-weight: 500;
   width: 80%;
   border-radius: 5px;
-  cursor: pointer;
   transition: 0.2s ease-in-out;
 }
 
 .labels-row .active p {
   border-radius: 5px;
-  background: #ff754c;
+  background: #f8da30;
   color: black;
 }
 
@@ -1062,7 +1045,7 @@ p {
 .charts-overimposed > div > div {
   padding: 0.1rem;
   border-radius: 9px;
-  background: #cfc8ff;
+  background: #7630f8;
   display: flex;
   justify-content: flex-end;
   overflow: hidden;
@@ -1109,7 +1092,8 @@ p {
 .git-topology {
   position: relative;
   transform: translateY(0);
-  width: 600px;
+  max-width: 600px;
+  width: 400px;
   height: 600px;
   display: flex;
   flex-direction: column;
@@ -1119,29 +1103,86 @@ p {
   background: black;
   border-radius: 15px;
   padding: 0 !important;
+  margin-right: 1rem;
 }
 
-.commit-details-card {
-  position: sticky;
-  width: 100% !important;
-  min-height: 100px !important;
-  border-radius: 10px;
-  background: rgba(128, 128, 128, 0.3);
-  backdrop-filter: blur(20px);
-  bottom: 0;
-  left: 0;
+@media screen and (max-width: 1130px) {
+  .git-topology {
+    margin-right: 0;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
 }
 
 .git-topology .view-more {
-  background: rgba(228, 228, 228, 0.1);
+  background: var(--bg-dark);
   position: sticky;
   border-radius: 5px;
   display: flex;
+  align-items: center;
   width: 160px;
   top: 0.5rem;
   right: 0.5rem;
   margin-top: 0;
   margin-right: -100%;
+  z-index: 10000000000;
+  cursor: none;
+}
+
+.dropdown-indicator {
+  height: 20px;
+  width: 20px;
+  position: relative;
+}
+
+.dropdown-indicator > * {
+  position: absolute;
+  top: 3px;
+  width: 2px;
+  height: 15px;
+  background: var(--text-dark);
+  border-radius: 3px;
+  transition: 0.1s ease-in-out;
+}
+
+.dropdown-indicator .one {
+  left: 5px;
+  transform: rotate(-40deg);
+}
+
+.dropdown-indicator .two {
+  right: 5px;
+  transform: rotate(40deg);
+}
+
+.dropdown-indicator[data-isopen="true"] .one {
+  transform: rotate(-90deg) !important;
+}
+
+.dropdown-indicator[data-isopen="true"] .two {
+  transform: rotate(90deg) !important;
+}
+.git-topology .tray {
+  display: flex;
+  background: var(--bg-dark);
+  border-radius: 5px;
+  margin-top: 1rem;
+  min-width: 200px;
+}
+
+.tray.closed {
+  display: none;
+}
+
+.git-topology .tray > * {
+  width: 100%;
+
+  border-radius: 3px !important;
+}
+
+.git-topology .tray > * {
+  box-shadow: none;
 }
 
 .git-topology,
@@ -1152,6 +1193,12 @@ p {
 .git-topology .view-more span p {
   font-weight: 600;
   color: var(--text-dark);
+}
+
+@media screen and (max-width: 768px) {
+  .git-topology .view-more {
+    display: none;
+  }
 }
 
 .git-topology .box {
@@ -1259,6 +1306,11 @@ p {
   z-index: 1;
   pointer-events: none;
 }
+@media screen and (max-width: 768px) {
+  .commit-description {
+    display: none;
+  }
+}
 
 .branch.reverse .commit-description {
   right: auto !important;
@@ -1277,23 +1329,63 @@ p {
   margin-left: 30px;
 }
 
-@keyframes tray-appear {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(var(--tray-offset));
-  }
-}
-@keyframes tray-disappear {
-  0% {
-    transform: translateY(var(--tray-offset));
-  }
-  100% {
-    transform: translateY(100%);
-  }
+.commits {
+  height: 600px;
+  min-width: 350px;
+  background: black;
+  border-radius: 15px;
+  padding: 0.5rem;
+  overflow-y: scroll;
 }
 
+.commits > * {
+  padding: 0.5rem;
+}
+
+.commit-info {
+  border-radius: 15px;
+  border: 1px solid var(--border);
+}
+
+.commit-info > * + * {
+  margin-top: 0.6rem;
+}
+
+.commit-info .details {
+  font-size: inherit;
+  font-weight: 400;
+  margin-right: 0.5rem;
+}
+
+.commit-info .hash {
+}
+.commit-info > p {
+  color: var(--text-dark);
+  max-width: 60ch;
+}
+
+.additions {
+  margin-bottom: 1rem;
+}
+.addition {
+  background: rgba(89, 225, 24, 0.21);
+  color: green;
+}
+.removal {
+  background: rgba(225, 24, 24, 0.41);
+  color: red;
+}
+.additions span,
+.removals span {
+  color: var(--text-dark);
+  margin-right: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .commits {
+    min-width: 100px;
+  }
+}
 .tray h2 {
   padding: 1rem 0;
   font-weight: 600;
@@ -1410,9 +1502,13 @@ p {
   padding: 1.3rem 8px;
   margin-bottom: 1rem;
   display: flex;
+  flex-wrap: wrap;
 }
-.dashboard-overview > * {
-  padding: 0.5rem;
+
+.dashboard-overview > h2 {
+  padding: 0 1rem;
+  width: 100%;
+  margin-bottom: 24px;
 }
 
 .popup-container {
