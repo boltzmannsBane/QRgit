@@ -1,4 +1,4 @@
-@impor url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 :root {
   font-size: calc(1rem + 0.5vw);
@@ -36,7 +36,7 @@
   user-select: none;
 }
 
-*::-webkit-scrollbar {
+.invisible-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
@@ -231,7 +231,7 @@ p {
 .action-icon {
   width: 9px;
   height: 9px;
-  fill: var(--text-dark);
+  fill: var(--text-dark) !important;
   flex-shrink: 0;
   position: relative;
   top: 1px;
@@ -374,7 +374,7 @@ p {
   min-width: 250px;
   padding: 0.5rem 0.7rem;
   border-radius: 10px;
-  background: var(--primary);
+  background: var(--bg-dark-blueish);
 }
 
 .pinned-issue > p {
@@ -419,6 +419,7 @@ p {
   margin-bottom: 10px;
   padding: 0.5rem 0.7rem;
   transition: 0.2s ease-in-out;
+  overflow: visible;
 }
 
 @media screen and (max-width: 414px) {
@@ -500,6 +501,7 @@ p {
 .load-more-btn-container {
   display: flex;
   justify-content: center;
+  margin-bottom: 1.5rem;
 }
 
 .load-more-btn {
@@ -1093,7 +1095,7 @@ p {
   position: relative;
   transform: translateY(0);
   max-width: 600px;
-  width: 400px;
+  width: 600px;
   height: 600px;
   display: flex;
   flex-direction: column;
@@ -1357,6 +1359,11 @@ p {
   margin-right: 0.5rem;
 }
 
+.commit-info h2 {
+  display: flex;
+  align-items: center;
+}
+
 .commit-info .hash {
 }
 .commit-info > p {
@@ -1367,14 +1374,27 @@ p {
 .additions {
   margin-bottom: 1rem;
 }
+
+.additions * {
+  color: var(--text-dark);
+  font-size: 12px;
+}
+
 .addition {
   background: rgba(89, 225, 24, 0.21);
   color: green;
 }
+
+.removals * {
+  color: var(--text-dark);
+  font-size: 12px;
+}
+
 .removal {
   background: rgba(225, 24, 24, 0.41);
   color: red;
 }
+
 .additions span,
 .removals span {
   color: var(--text-dark);
@@ -1415,13 +1435,12 @@ p {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.notification-item-icon {
-  position: relative;
-  min-width: 48px;
-  min-height: 48px;
-  border-radius: 100%;
-  background: var(--secondary);
+.notification-item-icon img {
   margin-right: 16px;
+  object-fit: cover;
+  border-radius: 100%;
+  max-width: 48px;
+  max-height: 48px;
 }
 
 .notification-item-body {
@@ -1584,6 +1603,7 @@ p {
   position: absolute;
   top: calc(-40px);
   right: 0.2rem;
+  cursor: pointer;
 }
 .exit-btn svg {
   fill: rgba(128, 128, 128, 0.3);
@@ -1594,6 +1614,325 @@ p {
   height: 16px;
   background: var(--primary);
   border-radius: 100%;
+}
+
+.repos {
+  margin-top: 0.5em;
+  margin-bottom: 1rem;
+  height: 260px;
+  position: relative;
+  max-width: 100%;
+  overflow: show;
+}
+
+.repos-container {
+  position: absolute;
+  max-width: calc(100% + 3rem);
+  overflow-x: scroll;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+}
+
+@media screen and (max-width: 768px) {
+  .repos-container {
+    max-width: calc(100% + 0.5rem);
+  }
+}
+.repo {
+  position: relative;
+  min-width: 200px;
+  padding: 1.3rem 0.2rem 0.2rem 0.2rem;
+  border-radius: 10px;
+  transition: 0.1s ease-in-out;
+}
+
+.copy-link-icon,
+.options-icon {
+  fill: var(--text-dark);
+  transition: 0.1s ease-in-out;
+  cursor: pointer;
+}
+
+.copy-link-icon:hover {
+  fill: var(--text-light);
+}
+
+.repo h2 {
+  display: flex;
+  align-items: center;
+}
+
+.repo-commit-info {
+  fill: var(--text-dark);
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+}
+
+.repo-commit-info * {
+  fill: var(--text-dark);
+}
+
+.repo + .repo {
+  margin-left: 0.6rem;
+}
+
+.repo.active {
+  background-image: linear-gradient(to right, #30f8da, #f8da30);
+}
+
+.repo-body {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+  padding: 0.5rem;
+  background: var(--bg-dark-blueish);
+}
+
+.repo-body > * + * {
+  margin-top: 0.5rem;
+}
+
+.languages,
+.languages span {
+  display: flex;
+  align-items: center;
+}
+
+.languages svg {
+  margin-right: 0.3rem;
+}
+
+.languages > span + span {
+  margin-left: 0.5rem;
+}
+
+.language-icon {
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  background: cyan;
+  margin-right: 0.3rem;
+}
+
+.user-overview {
+  position: relative;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1064px) {
+  .user-overview {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 3rem;
+  }
+}
+
+.user-info {
+  max-width: 200px;
+  max-width: 200px;
+  position: relative;
+}
+
+.user-overview > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* use this class later if u want */
+
+.tabs {
+  position: absolute;
+  width: 200px;
+  height: 60px;
+  background: var(--bg-dark-blueish);
+  top: -60px;
+  left: -1rem;
+  border-radius: 5px;
+}
+.user-info > img {
+  object-fit: cover;
+  border-radius: 100%;
+  max-width: 200px;
+  max-width: 200px;
+}
+.user-credentials {
+  margin-top: 0.5rem;
+}
+.emoji {
+  position: absolute;
+  box-sizing: content-box;
+  bottom: 15px;
+  right: 15px;
+  border-radius: 100%;
+  background: var(--bg-dark-blueish);
+  border: 1px solid var(--border);
+  padding: 0.3rem;
+}
+
+.achievments-grid {
+  display: grid;
+  grid-template-rows: repeat(2, 180px);
+  grid-template-columns: repeat(2, 180px);
+  gap: 1rem;
+}
+
+@media screen and (max-width: 430px) {
+  .achievments-grid {
+    display: none;
+  }
+}
+
+.achievments-grid > * {
+  border-radius: 10px;
+  background: var(--bg-dark-blueish);
+}
+.achievments-chart {
+  background: none !important;
+}
+
+.achievments-chart {
+  position: relative;
+}
+
+.chart-start {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  background: white;
+  top: 12.5px;
+  left: calc(50% - 2px);
+}
+
+.chart-2 {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.chart-3 {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
+
+.achievment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.achievment h1 {
+  font-size: 48px;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(to right, #f8da30, #7630f8);
+}
+
+.latest-events {
+  border-radius: 24px;
+  min-width: 500px;
+  min-height: 100px;
+  max-height: 380px;
+  position: relative;
+  overflow: scroll;
+  display: grid;
+  padding: 1rem 1rem 0 1rem;
+  background: black;
+}
+.device {
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--bg-dark-blueish);
+  position: relative;
+}
+.device-modal {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  top: 100%;
+  left: 0;
+  border-radius: 20px;
+  backdrop-filter: blur(80px);
+  background: rgba(128, 128, 128, 0.3);
+  transition: top 0.2s ease-in-out;
+}
+.device-modal[data-isActive="true"] {
+  top: 0;
+}
+.device-modal .exit-btn {
+  top: 1rem;
+  right: 1rem;
+}
+.device-modal svg {
+  fill: white;
+}
+.device-event {
+  max-width: 15ch;
+  text-align: center;
+  line-height: 150%;
+}
+.device-event span {
+  position: relative;
+}
+
+.device-event span:after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: white;
+}
+.view-on-gh-btn {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  max-width: 50%;
+  background: white;
+  border-radius: 10px;
+}
+
+.view-on-gh-btn p {
+  color: var(--text-dark);
+}
+
+.grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+.grid-item svg {
+  fill: white;
+}
+@keyframes Blink {
+  0% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.8;
+  }
 }
 
 @keyframes loader {
@@ -1639,14 +1978,6 @@ p {
     transform: translateY(-50%);
     opacity: 0;
     display: none;
-  }
-}
-@keyframes Blink {
-  0% {
-    opacity: 0.1;
-  }
-  100% {
-    opacity: 0.5;
   }
 }
 @keyframes pulse {

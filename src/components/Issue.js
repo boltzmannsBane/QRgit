@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const OpenIssueIcon = () => (
   <svg
     width="24"
@@ -40,10 +42,20 @@ const CommentsIcon = () => (
 );
 
 export const Issue = ({ sdss }) => {
+  const [viewed, setViewed] = useState(false);
+
   return (
     <>
-      <div class="issue" onClick={() => sdss(true)}>
+      <div
+        class="issue"
+        onClick={() => {
+          sdss(true);
+          setViewed(true);
+        }}
+      >
         <div class="issue-box">
+          <div class={`notification-indicator ${viewed && "hidden"}`} />
+
           <OpenIssueIcon />
           <p>
             "Uncaught TypeError: Cannot read property 'identifier' of undefined"
@@ -64,7 +76,7 @@ export const Issue = ({ sdss }) => {
           </div>
         </div>
         <div class="issue-details">
-          <p>#penis</p>
+          <p>10.12.2022</p>
         </div>
       </div>
     </>
@@ -77,7 +89,7 @@ export const PinnedIssue = () => {
       {" "}
       <p>[epic] enable Rust compiler for OSS</p>
       <div class="issue-details">
-        <p>#penis</p>
+        <p>10.12.2022</p>
       </div>
       <div>
         <OpenIssueIcon />

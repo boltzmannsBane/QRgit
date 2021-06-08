@@ -8,19 +8,51 @@ import {
   UserMenuButtons,
   DashboardOverview,
   DashboardGoalsDigest,
+  Repos,
+  UserOverview,
 } from "./components/DashboardComponents";
 
+import { motion, AnimatePresence } from "framer-motion";
+
+const viewsArray = ["Dashboard", "Issues", "Releases"];
+const views = [<Dashboard />, <IssuesScreen />];
+
 function App() {
+  const [activeView, setActiveView] = useState(viewsArray[0]);
+  const [displayView, setDisplayView] = useState("Dashboard");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => console.log(loading), [loading]);
+
+  useEffect(() => {
+    let completed;
+    function handleLoading() {
+      completed = window.setTimeout(() => {
+        setLoading(false);
+        setDisplayView(activeView);
+      }, 1500);
+    }
+    handleLoading();
+    return () => {
+      clearTimeout(completed);
+    };
+  }, [activeView]);
+
+  const handleViewChange = () => views[viewsArray.indexOf(displayView)];
 
   return (
     <div class="container">
-      <Menu />
+      <Menu
+        activeView={activeView}
+        setActiveView={setActiveView}
+        loading={loading}
+        setLoading={setLoading}
+      />
       <div class="content-container">
         <div class="git-icon-container">
           <div class="git-icon" />
         </div>
-        <Dashboard />
-        {/*        <IssuesScreen /> */}
+        <AnimatePresence exitBeforeEnter>{handleViewChange()}</AnimatePresence>
         <Popup />
         <div class="cursor" />
       </div>
@@ -30,18 +62,12 @@ function App() {
 
 export default App;
 
-function Menu() {
-  const [activeNavItem, setActiveNavItem] = useState("Dashboard");
+function Menu({ activeView, setActiveView, loading, setLoading }) {
   const [pending, setPending] = useState(false);
 
   const showLoader = (ani) => {
-    if (pending && activeNavItem === ani) return <NavLoadingIndicator />;
+    if (loading && activeView === ani) return <NavLoadingIndicator />;
   };
-
-  // just a test. remove later
-  useEffect(() => pending && setTimeout(() => setPending(false), 3000), [
-    pending,
-  ]);
 
   return (
     <div class="menu">
@@ -49,57 +75,28 @@ function Menu() {
         <h1>qGit Client</h1>
         <input type="text" placeholder="Search" />
         <nav>
-          <div
-            // reminder that component state doesn't persist on route change.
-            // either exclude the menu from the router or find some other way around.
-            // maybe context.
-            class="nav-item"
-            data-isclicked={activeNavItem === "Issues"}
-            onClick={() => {
-              setActiveNavItem("Issues");
-              setPending(true);
-            }}
-          >
-            <div class="nav-icon"></div>
-            <p
-            // href="/"
+          {viewsArray.map((el, index) => (
+            <div
+              // reminder that component state doesn't persist on route change.
+              // either exclude the menu from the router or find some other way around.
+              // maybe context.
+              class="nav-item"
+              data-isclicked={activeView === el}
+              onClick={() => {
+                setActiveView(el);
+                setLoading("pending");
+              }}
             >
-              Issues
-            </p>
-            <div class="spacer" />
-            {showLoader("Issues")}
-          </div>
-          <div
-            class="nav-item"
-            data-isclicked={activeNavItem === "Releases"}
-            onClick={() => {
-              setActiveNavItem("Releases");
-              setPending(true);
-            }}
-          >
-            <div class="nav-icon"></div>
-            <p>Releases</p>
-            <div class="spacer" />
-            {showLoader("Releases")}
-          </div>
-
-          <div
-            class="nav-item"
-            data-isclicked={activeNavItem === "Dashboard"}
-            onClick={() => {
-              setActiveNavItem("Dashboard");
-              setPending(true);
-            }}
-          >
-            <div class="nav-icon"></div>
-            <p
-            // href="/"
-            >
-              Dashboard
-            </p>
-            <div class="spacer" />
-            {showLoader("Dashboard")}
-          </div>
+              <div class="nav-icon"></div>
+              <p
+              // href="/"
+              >
+                {el}
+              </p>
+              <div class="spacer" />
+              {showLoader(el)}
+            </div>
+          ))}
         </nav>
         <div class="divider" />
         <a class="secondary" href="/">
@@ -166,20 +163,15 @@ function Filter() {
 }
 
 function IssuesContent({ setDetailsScreenState }) {
+  const issues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
   return (
     <div class="content">
       <PinnedIssues />
       <div class="issues-content">
-        <Issue sdss={setDetailsScreenState} />
-        <Issue />
-        <Issue />
-        <Issue />
-        <Issue />
-        <Issue />
-        <Issue />
-
-        {/*         <IssuesLoadingScreen />
-         */}
+        {issues.map(() => (
+          <Issue sdss={setDetailsScreenState} />
+        ))}
       </div>
       <div class="load-more-btn-container">
         <div class="load-more-btn">
@@ -311,13 +303,13 @@ function Dashboard() {
   return (
     <div class="dashboard">
       <div class="dashboard-menu">
-        <h1>
-          Welcome, <b>John</b>
-        </h1>
         <div class="spacer" />
         <UserMenuButtons />
       </div>
       <main>
+        <UserOverview />
+
+        <Repos />
         <DashboardOverview />
         <DashboardGoalsDigest />
         <DashboardTaskTimetable />
