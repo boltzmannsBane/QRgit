@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 
 const OpenIssueIcon = () => (
   <svg
@@ -41,25 +41,24 @@ const CommentsIcon = () => (
   </svg>
 );
 
-export const Issue = ({ sdss }) => {
-  const [viewed, setViewed] = useState(false);
+export const Issue = ({ sdss, data, comments, index }) => {
+  const { title, date} = data
+  
+  useEffect(() => console.log(comments), [])
 
   return (
     <>
       <div
         class="issue"
         onClick={() => {
-          sdss(true);
-          setViewed(true);
+          sdss(index + 1);
         }}
       >
         <div class="issue-box">
-          <div class={`notification-indicator ${viewed && "hidden"}`} />
 
           <OpenIssueIcon />
           <p>
-            "Uncaught TypeError: Cannot read property 'identifier' of undefined"
-            when calling retain() in Relay 8.0.0{" "}
+           {title}
           </p>
           <div class="tags">
             <span class="tag docs">docs</span>
@@ -71,25 +70,26 @@ export const Issue = ({ sdss }) => {
               <CommentsIcon />
             </div>
             <div class="comments-counter">
-              <p>32</p>
+              <p>{comments.length}</p>
             </div>
           </div>
         </div>
         <div class="issue-details">
-          <p>10.12.2022</p>
+          <p>{date}</p>
         </div>
       </div>
     </>
   );
 };
 
-export const PinnedIssue = () => {
+export const PinnedIssue = ({data, index, sdss, comments}) => {
+const { title, date} = data
   return (
-    <div class="pinned-issue">
+    <div class="pinned-issue" onClick={() => sdss(index)}>
       {" "}
-      <p>[epic] enable Rust compiler for OSS</p>
+      <p>{title}</p>
       <div class="issue-details">
-        <p>10.12.2022</p>
+        <p>{date}</p>
       </div>
       <div>
         <OpenIssueIcon />
@@ -98,7 +98,7 @@ export const PinnedIssue = () => {
             <CommentsIcon />
           </div>
           <div class="comments-counter">
-            <p>32</p>
+            <p>{comments.length}</p>
           </div>
         </div>
       </div>

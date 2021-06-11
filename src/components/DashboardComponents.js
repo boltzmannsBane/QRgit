@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NotifsIcon, ProfileIcon, DoughnutChart } from "./SVGs.js";
+import { NotifsIcon, DoughnutChart } from "./SVGs.js";
 import { motion, AnimatePresence } from "framer-motion";
 import { AppleWatchDock } from "./AppleWatchDock";
 import Benji from "./images/Benji.webp";
@@ -7,6 +7,82 @@ import Katherine from "./images/Katherine.webp";
 import Daniel from "./images/Daniel.webp";
 import User from "./images/User.webp";
 
+
+
+const mockCommit = [
+<><pre>{"const CommitNode = ({ data }) => {"}</pre>
+<pre>{"  const [hovered, setHovered] = useState(false);"}</pre>
+
+<pre><code class="addition">{" + const [active, setActive] = useState(false);"}</code></pre>
+
+
+<pre><code class="addition">{" + const id = makeid(6);"}</code></pre>
+
+
+<pre>{"function makeid(length) {"}</pre>
+  
+<pre>{"    var result = [];"}</pre>
+
+<pre>{"@@ -344,12 +346,29 @@ const CommitNode = ({ data }) => {"}</pre>
+
+<pre>{"    }"}</pre>
+
+    <pre>{"    return result.join(``);"}</pre>
+
+    <pre>{"  }"}</pre>
+
+  <pre>{""}</pre>
+
+<pre><code class="addition">{" + useEffect(() => {"}</code></pre>
+
+
+  <pre><code class="addition">{" +   // select a current node"}</code></pre>
+
+    <pre>{"    const node = document.getElementById(id);"}</pre>
+
+    <pre><code class="addition">{" +   // handle click on that node"}</code></pre>
+
+    <pre><code class="addition">{" +   node.addEventListener(`click`, () => {"}</code></pre>
+
+    <pre><code class="addition">{" +     //create a list of active nodes"}</code></pre>
+
+      <pre><code class="addition">{" +     // convert HTML collection into a mappable array"}</code></pre>
+
+      <pre><code class="addition">{" +     const activeNodesArray = Array.from(activeNodes);"}</code></pre>
+
+      <pre><code class="addition">{" +     // remove active class from the old nodes"}</code></pre>
+
+      <pre><code class="addition">{" +     activeNodesArray !== [] &&"}</code></pre>
+
+      <pre><code class="addition">{" +       activeNodesArray.map((el) => el.classList.remove(`active`));"}</code></pre>
+
+        <pre><code class="addition">{" +     // add active class to the current node"}</code></pre>
+
+      <pre><code class="addition">{" +     !node.classList.contains(`active`) && node.classList.add(`active`);"}</code></pre>
+
+      <pre><code class="addition">{" +   });"}</code></pre>
+
+    <pre><code class="addition">{" + }, []);"}</code></pre>
+
+  <pre>{"  return ("}</pre>
+
+  <pre>{"    <div"}</pre>
+
+    <pre>{"      onMouseOver={() => setHovered(true)}"}</pre>
+
+      <pre>{"      onMouseLeave={() => setHovered(false)}"}</pre>
+
+      <pre><code class="removal">{" -     class=`commit-node`"}</code></pre>
+
+      <pre><code class="removal">{" -     id={makeid(6)}"}</code></pre>
+
+      <pre><code class="addition">{" +     class={`commit-node `}"}</code></pre>
+
+      <pre><code class="addition">{" +     id={id}"}</code></pre>
+
+      <pre>{""}</pre>
+    <pre>{">"}</pre></>
+]
 const mockNotifications = [
   { username: "Benji", avatar: Benji, issueId: "1412", time: "2" },
   { username: "Daniel", avatar: Daniel, issueId: "1899", time: "8" },
@@ -17,59 +93,100 @@ const mockData = [
   { metric: "Issues Resolved", achievment: 15, benchmark: 16 },
   { metric: "Pull Requests Approved", achievment: 17, benchmark: 22 },
 ];
-const mockEvents = [
+const randomNumber = (number) => Math.floor(Math.random() * number);
+const mockGoalsData = [
   {
-    mockEvent: "bug",
-    repo: "draft-js",
-    date: "10.21.2021",
-    eventStatus: "open",
-    link: "/",
+    goal: "Lorem Ipsum",
+    remaining: randomNumber(12),
+    completion: 30,
+    started: "08.08.21",
+    description:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+    tasks: [
+      { title: "Lorem Ipsum", start: 1, finish: 3 },
+      { title: "Dolor Sit Amet", start: 2, finish: 5 },
+      { title: "Consectur adipiscing", start: 4, finish: 6 },
+      { title: "Elit Sed Do", start: 3, finish: 5 },
+      { title: "Eisumod tempor", start: 2, finish: 2 },
+      { title: "Incididunt ut labore", start: 3, finish: 7 },
+    ],
+  },
+
+  {
+    goal: "Dolor Sit",
+    remaining: randomNumber(12),
+    completion: 70,
+    started: "29.10.21",
+    description:
+      "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+    tasks: [
+      { title: "Lorem Ipsum", start: 5, finish: 7 },
+      { title: "Dolor Sit Amet", start: 3, finish: 3 },
+      { title: "Consectur adipiscing", start: 1, finish: 3 },
+      { title: "Elit Sed Do", start: 3, finish: 6 },
+      { title: "Eisumod tempor", start: 1, finish: 7 },
+      { title: "Incididunt ut labore", start: 1, finish: 6 },
+    ],
   },
   {
-    mockEvent: "hotfix",
-    repo: "jest-fork",
-    date: "06.02.2021",
-    eventStatus: "open",
-    link: "/",
+    goal: "Amet Consectur",
+    remaining: randomNumber(12),
+    completion: 50,
+    started: "11.01.21",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    tasks: [
+      { title: "Lorem Ipsum", start: 2, finish: 4 },
+      { title: "Dolor Sit Amet", start: 3, finish: 3 },
+      { title: "Consectur adipiscing", start: 1, finish: 6 },
+      { title: "Elit Sed Do", start: 4, finish: 7 },
+      { title: "Eisumod tempor", start: 2, finish: 2 },
+      { title: "Incididunt ut labore", start: 1, finish: 5 },
+    ],
   },
   {
-    mockEvent: "legacyFix",
-    repo: "litho-js",
-    date: "04.06.2021",
-    eventStatus: "open",
-    link: "/",
+    goal: "Adipiscing Elit",
+    remaining: randomNumber(12),
+    completion: 81,
+    started: "03.04.21",
+    description:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    tasks: [
+      { title: "Lorem Ipsum", start: 1, finish: 3 },
+      { title: "Dolor Sit Amet", start: 2, finish: 5 },
+      { title: "Consectur adipiscing", start: 4, finish: 6 },
+      { title: "Elit Sed Do", start: 3, finish: 5 },
+      { title: "Eisumod tempor", start: 2, finish: 2 },
+      { title: "Incididunt ut labore", start: 3, finish: 7 },
+    ],
   },
   {
-    mockEvent: "suggestion",
-    repo: "relay-modern",
-    date: "29.05.2020",
-    eventStatus: "open",
-    link: "/",
-  },
-  {
-    mockEvent: "hotfix",
-    repo: "docuverse",
-    date: "14.02.2020",
-    eventStatus: "open",
-    link: "/",
-  },
-  {
-    mockEvent: "bug",
-    repo: "wrangle",
-    date: "01.02.2021",
-    eventStatus: "open",
-    link: "/",
-  },
-  {
-    mockEvent: "suggestion",
-    repo: "DS-driver",
-    date: "12.02.2020",
-    eventStatus: "open",
-    link: "/",
+    goal: "Sed Do Eisumod",
+    remaining: randomNumber(12),
+    completion: 90,
+    started: "12.02.21",
+    description:
+      "eque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+    tasks: [
+      { title: "Lorem Ipsum", start: 4, finish: 6 },
+      { title: "Dolor Sit Amet", start: 3, finish: 5 },
+      { title: "Consectur adipiscing", start: 1, finish: 7 },
+      { title: "Elit Sed Do", start: 2, finish: 4 },
+      { title: "Eisumod tempor", start: 1, finish: 3 },
+      { title: "Incididunt ut labore", start: 2, finish: 5 },
+    ],
   },
 ];
+const colors = [
+  "#F8DA30",
+  "#7630F8",
+  "#F7304D",
+  "#7630F8",
+  "#30F8DA",
+    "#E6BA5C",
+  "#3091F8",
 
-const colors = ["#F8DA30", "#7630F8", "#F7304D", "#7630F8", "#30F8DA"];
+];
 
 export const UserMenuButtons = () => {
   const [state, setState] = useState(false);
@@ -91,10 +208,6 @@ export const UserMenuButtons = () => {
     state === element && setState(null);
     element === "notifications-button" && setNIS(false);
   };
-
-  function handleTraySwipeDown() {
-    setState(false);
-  }
 
   // set active button (notifications/profile) state to FALSE if a click occurs outside the buttons ot their child elements, thus closing whichever one is currently active
   useEffect(() => {
@@ -168,7 +281,7 @@ function NotificationItem({ data }) {
           <p>
             Commented on{" "}
             <span>
-              <a href="#"> Issue #{issueId}</a>
+              <a href="/"> Issue #{issueId}</a>
             </span>
           </p>
         </div>
@@ -177,7 +290,7 @@ function NotificationItem({ data }) {
   );
 }
 
-export const Repos = () => {
+export const Repos = ({selectedRepo, setSelectedRepo}) => {
   //replace with real data later
   const repos = () => {
     let i = 0;
@@ -188,9 +301,6 @@ export const Repos = () => {
     return arr;
   };
 
-  const [activeRepo, setActiveRepo] = useState();
-
-  useEffect(() => activeRepo && console.log(activeRepo), [activeRepo]);
 
   return (
     <>
@@ -198,8 +308,8 @@ export const Repos = () => {
         <div class="repos-container invisible-scrollbar">
           {repos().map((e, index) => (
             <Repo
-              activeRepo={activeRepo}
-              setActiveRepo={setActiveRepo}
+selectedRepo={selectedRepo}
+setSelectedRepo={setSelectedRepo}
               repoName={e}
               index={index}
             />
@@ -210,42 +320,15 @@ export const Repos = () => {
   );
 };
 
-const Repo = ({ activeRepo, setActiveRepo, repoName, index }) => {
-  const [id, setId] = useState("");
-
-  function makeid(length) {
-    var result = [];
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result.push(
-        characters.charAt(Math.floor(Math.random() * charactersLength))
-      );
-    }
-    return result.join("");
-  }
-
-  useEffect(() => {
-    function createId() {
-      return new Promise((resolve, reject) => {
-        const id = makeid(10);
-        return resolve(id);
-      });
-    }
-    createId().then((id) => {
-      setId(id);
-      index === 0 && setActiveRepo(id);
-    });
-  }, []);
+const Repo = ({ selectedRepo, setSelectedRepo, repoName, index }) => {
 
   return (
     <div
-      id={id}
-      onClick={(e) => setActiveRepo(id)}
-      class={`repo ${activeRepo === id && "active"}`}
+
+      onClick={(e) => setSelectedRepo(index)}
+      class={`repo ${selectedRepo === index && "active"}`}
     >
-      <div onClick={(e) => setActiveRepo(id)} class="repo-body">
+      <div onClick={(e) => setSelectedRepo(index)} class="repo-body">
         <h2>
           {repoName} <div class="spacer" />
           <svg
@@ -281,7 +364,7 @@ const Repo = ({ activeRepo, setActiveRepo, repoName, index }) => {
         <div class="languages">
           <span>
             <div class="language-icon" />
-            <p class="details">C++</p>
+            <p class="details">Haskell</p>
           </span>
           <span>
             <svg
@@ -315,12 +398,12 @@ const Repo = ({ activeRepo, setActiveRepo, repoName, index }) => {
   );
 };
 
-export const DashboardOverview = () => {
+export const DashboardOverview = ({selectedRepo}) => {
   const [activeCommit, setActiveCommit] = useState("");
   return (
     <div class="dashboard-overview">
       <h2>Repo's Git History</h2>
-      <GitTopology setActiveCommit={setActiveCommit} />
+      <GitTopology setActiveCommit={setActiveCommit} selectedRepo={selectedRepo} />
       <div class="commits grow invisible-scrollbar">
         <div class="commit-info">
           <h2>
@@ -365,73 +448,19 @@ export const DashboardOverview = () => {
         </div>
         <div class="commit-overview"></div>
         <div class="commit-body">
-          <pre>
-            <code>
-              <CommitBody />
-            </code>
-          </pre>
+ {mockCommit[0]}
         </div>
       </div>
     </div>
   );
 };
 
-const CommitBody = () => {
-  const mockData = () => {
-    let i = 0;
-    let arr = [];
-    for (i; i <= 20; i++) {
-      arr.push(i);
-    }
-    return arr;
-  };
-  let i = 1000;
-
-  const additions = mockData().map(() => {
-    i++;
-    if (i > 1008 && i < 1016)
-      return (
-        <p class="addition">
-          <span>{i} +</span>
-          {`Lorem Ipsum = () => {Dolor Si Amet}`}
-        </p>
-      );
-    return (
-      <p>
-        <span>{i}</span> Lorem Ipsum
-      </p>
-    );
-  });
-
-  const removals = mockData().map(() => {
-    i++;
-    if (i > 1028 && i < 1034)
-      return (
-        <p class="removal">
-          <span>{i} -</span>
-          {`Lorem Ipsum = () => {Dolor Si Amet}`}
-        </p>
-      );
-    return (
-      <p>
-        <span>{i}</span> Lorem Ipsum
-      </p>
-    );
-  });
-
-  return (
-    <>
-      <div class="additions">{additions}</div>
-      <div class="removals">{removals}</div>
-    </>
-  );
-};
-
 const gitData = [
+[
   [0, 0, 3, 0, 0],
   [0, 0, 1, 0, 0],
-  [3, 0, 1, 0, 3],
-  [1, 3, 1, 0, 1],
+  [3, 0, 1, 0, 0],
+  [1, 3, 1, 0, 3],
   [1, 1, 1, 0, 1],
   [3, 4, 3, 3, 1],
   [1, 1, 1, 1, 3],
@@ -464,11 +493,51 @@ const gitData = [
   [0, 0, 1, 0, 0],
   [0, 0, 1, 0, 0],
   [0, 0, 1, 0, 0],
+],
+[
+  [0, 0, 0, 3, 0, 0, 0],
+  [0, 0, 3, 1, 0, 3, 0],
+  [0, 0, 1, 1, 3, 4, 0],
+  [0, 0, 3, 3, 1, 1, 0],
+  [0, 3, 1, 1, 1, 1, 0],
+  [0, 1, 1, 1, 1, 1, 0],
+  [0, 1, 3, 1, 1, 1, 3],
+  [3, 1, 1, 3, 4, 3, 4],
+  [1, 1, 1, 1, 1, 1, 1],
+  [1, 4, 3, 1, 3, 4, 1],
+  [1, 1, 1, 1, 1, 1, 1],
+  [4, 3, 1, 3, 4, 1, 3],
+  [1, 1, 3, 1, 1, 1, 1],
+  [3, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1],
+  [1, 3, 4, 3, 3, 3, 4],
+  [1, 1, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 1, 1, 1],
+  [3, 3, 1, 1, 1, 3, 4],
+  [1, 4, 3, 1, 1, 1, 1],
+  [1, 1, 1, 1, 3, 4, 1],
+  [4, 3, 1, 1, 1, 1, 1],
+  [1, 1, 4, 3, 1, 3, 3],
+  [1, 1, 1, 1, 1, 1, 1],
+  [1, 3, 1, 1, 1, 1, 1],
+  [1, 1, 1, 1, 3, 4, 2],
+  [1, 1, 1, 3, 1, 1, 0],
+  [1, 3, 3, 1, 3, 2, 0],
+  [2, 1, 1, 1, 1, 0, 0],
+  [0, 1, 3, 1, 1, 0, 0],
+  [0, 1, 1, 3, 1, 0, 0],
+  [0, 2, 3, 1, 2, 0, 0],
+  [0, 0, 1, 1, 0, 0, 0],
+  [0, 0, 1, 3, 0, 0, 0],
+  [0, 0, 2, 1, 0, 0, 0],
+  [0, 0, 0, 1, 0, 0, 0],
+  [0, 0, 0, 1, 0, 0, 0],
+]
 ];
 
-const GitTopology = ({ setActiveCommit }) => {
+const GitTopology = ({ setActiveCommit, selectedRepo }) => {
   //eh
-
+  
   const commits = [
     {
       hash: "35e32b6a00dec02ae7d7c45c6b7106779a124685",
@@ -533,6 +602,9 @@ const GitTopology = ({ setActiveCommit }) => {
       isDown = false;
     }
   }, []);
+  
+  const makeReverse = (val) => {
+  if (val > gitData[0][0].length / 2) return "reverse" }
 
   const gitMapElementsTable = (branchIndex, vertIndex) => [
     // 0 - "nothing"
@@ -544,7 +616,7 @@ const GitTopology = ({ setActiveCommit }) => {
     // 2 - "branch created"
     <div
       style={{ background: `${colors[branchIndex]}` }}
-      class={`branch  birth ${branchIndex > 1 && "reverse"}`}
+      class={`branch  birth ${makeReverse(branchIndex)}`}
     >
       <CommitNode setActiveCommit={setActiveCommit} data={commits[0]} />
       <svg>
@@ -559,7 +631,7 @@ const GitTopology = ({ setActiveCommit }) => {
             <stop
               offset="0%"
               stop-color={
-                branchIndex > 2
+                branchIndex > gitData[0][0].length / 2
                   ? colors[branchIndex - 1]
                   : colors[branchIndex + 1]
               }
@@ -578,14 +650,14 @@ const GitTopology = ({ setActiveCommit }) => {
     // 3 - "a commit node"
     <div
       style={{ background: `${colors[branchIndex]}` }}
-      class={`branch ${branchIndex > 1 && "reverse"}`}
+      class={`branch ${makeReverse(branchIndex)}`}
     >
       <CommitNode setActiveCommit={setActiveCommit} data={commits[0]} />
     </div>,
 
     // 4 - "pull request"
     <div
-      class={`branch  ${branchIndex > 1 && "reverse"}`}
+      class={`branch  ${makeReverse(branchIndex)}`}
       style={{ background: `${colors[branchIndex]}` }}
     >
       <svg>
@@ -601,7 +673,7 @@ const GitTopology = ({ setActiveCommit }) => {
             <stop
               offset="100%"
               stop-color={
-                branchIndex > 2
+                branchIndex > gitData[0][0].length / 2
                   ? colors[branchIndex - 1]
                   : colors[branchIndex + 1]
               }
@@ -620,7 +692,7 @@ const GitTopology = ({ setActiveCommit }) => {
   const columns = (arr, vertIndex) =>
     arr.map((branch, branchIndex) => buildTree(branch, branchIndex, vertIndex));
 
-  const rows = gitData.map((row, index) => (
+  const rows =   gitData[selectedRepo%2].map((row, index) => (
     <div class="lines-container">
       {columns(row)}
       <div class="ruler" />
@@ -632,7 +704,6 @@ const GitTopology = ({ setActiveCommit }) => {
   }
 
   const [open, setOpen] = useState(false);
-  const branches = ["master", "dev", "dev2", "experimental", "experimental1"];
 
   return (
     <div
@@ -657,9 +728,9 @@ const GitTopology = ({ setActiveCommit }) => {
           </div>
         </span>
         <div class={`tray ${open ? "open" : "closed"}`}>
-          {branches.map((element, index) => (
+          {gitData[selectedRepo%2][0].map((element, index) => (
             <div class="notification-item">
-              <b>{element}</b>
+              <b>branch-{index}</b>
               <div class="spacer" />
               <svg
                 aria-hidden="true"
@@ -686,7 +757,6 @@ const GitTopology = ({ setActiveCommit }) => {
 
 const CommitNode = ({ data, setActiveCommit }) => {
   const [hovered, setHovered] = useState(false);
-  const [active, setActive] = useState(false);
 
   const id = makeid(10);
 
@@ -745,53 +815,33 @@ const CommitNode = ({ data, setActiveCommit }) => {
 };
 
 export const DashboardGoalsDigest = () => {
-  const [activeGoal, setActiveGoal] = useState();
+  const [activeGoal, setActiveGoal] = useState(mockGoalsData[0].goal);
 
-  function handleClick(el) {
-    setActiveGoal(el);
+  function handleClick(title) {
+    setActiveGoal(title);
   }
 
-  useEffect(() => setActiveGoal(1), []);
-
+  const activeGoalData = () => {
+    let data = [];
+    mockGoalsData.map((e) => {
+      if (e.goal === activeGoal) return (data = e);
+    });
+    return data;
+  };
+  const { remaining, description } = activeGoalData();
   return (
     <div class="goals-digest-container">
       <div class="goals-block">
         <h2>Your Goals</h2>{" "}
-        <GoalsDigestGoalRow
-          stroke={0}
-          dashOffset={30}
-          handleClick={handleClick}
-          el={1}
-          state={activeGoal}
-        />
-        <GoalsDigestGoalRow
-          stroke={1}
-          dashOffset={70}
-          handleClick={handleClick}
-          el={2}
-          state={activeGoal}
-        />
-        <GoalsDigestGoalRow
-          stroke={2}
-          dashOffset={50}
-          handleClick={handleClick}
-          el={3}
-          state={activeGoal}
-        />
-        <GoalsDigestGoalRow
-          stroke={3}
-          dashOffset={81}
-          handleClick={handleClick}
-          el={4}
-          state={activeGoal}
-        />
-        <GoalsDigestGoalRow
-          stroke={4}
-          dashOffset={90}
-          handleClick={handleClick}
-          el={5}
-          state={activeGoal}
-        />
+        {mockGoalsData.map((e, i) => (
+          <GoalsDigestGoalRow
+            stroke={i}
+            dashOffset={e.completion}
+            data={e}
+            handleClick={handleClick}
+            state={activeGoal}
+          />
+        ))}
         <button class="view-more disabled">
           <b>View More</b>
         </button>
@@ -803,7 +853,7 @@ export const DashboardGoalsDigest = () => {
           <div class="goal-description">
             <div class="two">
               <h2>due est. </h2>
-              <h1>~12 days</h1>
+              <h1>~{remaining} days</h1>
               <div class="is-on-track on-track">
                 <p>
                   <b>on track</b>
@@ -811,38 +861,38 @@ export const DashboardGoalsDigest = () => {
               </div>
             </div>
 
-            <div class="spacer" />
+            <div class="spacer"></div>
             <div class="body-text">
-              <p>
-                From time to time, I'll open up a document in vim and find that
-                my manual folds are completely messed up. It's like vim decides
-                to ignore its usual markers and, instead, start interpreting
-                random bits of text as being fold points.
-              </p>
+              <p>{description}</p>
             </div>
           </div>
 
-          <GoalOverviewGanttChart />
+          <GoalOverviewGanttChart activeGoalData={activeGoalData} />
         </div>
       </div>
     </div>
   );
 };
 
-const GoalsDigestGoalRow = ({ state, stroke, dashOffset, handleClick, el }) => {
+const GoalsDigestGoalRow = ({
+  state,
+  data,
+  stroke,
+  dashOffset,
+  handleClick,
+}) => {
   function checkActiveGoal(el, state) {
-    if (state === el) return "active";
+    if (state === data.goal) return "active";
   }
-
   return (
     <div
-      class={`goal-row ${checkActiveGoal(el, state)}`}
-      onClick={() => handleClick(el)}
+      class={`goal-row ${checkActiveGoal(data.goal, state)}`}
+      onClick={() => handleClick(data.goal)}
     >
       <div></div>
       <div>
-        <h2>Lorem </h2>
-        <p class="details">started 10.02.21</p>
+        <h2>{data.goal} </h2>
+        <p class="details">started {data.started}</p>
       </div>
       <div class="spacer" />
       <div>
@@ -853,7 +903,7 @@ const GoalsDigestGoalRow = ({ state, stroke, dashOffset, handleClick, el }) => {
   );
 };
 
-const GoalOverviewGanttChart = () => {
+const GoalOverviewGanttChart = ({ activeGoal, activeGoalData }) => {
   const months = ["Sept", "Oct", "Nov", "Dec", "Jan", "Feb"];
 
   useEffect(() => {
@@ -926,12 +976,20 @@ const GoalOverviewGanttChart = () => {
           <div class="filler" /> <div class="filler" />
           <div class="filler"></div> <div class="filler" />
           <div class="charts-overimposed">
-            {months.map((e, i) => (
+            {activeGoalData().tasks.map((e, i) => (
               <div
-                style={{ gridRow: `${i + 1}`, gridColumn: `${i + 1}/${i + 1}` }}
+                style={{
+                  gridRow: `${i + 1}`,
+                  gridColumn: `${e.start}/${e.finish}`,
+                }}
               >
-                <div class="grow">
-                  <p>lsget sm pussy tnit aaaaa</p>
+                <div
+                  class="grow"
+                  style={{
+                    background: `${colors[i]}`,
+                  }}
+                >
+                  <p>{e.title}</p>
                 </div>
               </div>
             ))}
@@ -943,170 +1001,6 @@ const GoalOverviewGanttChart = () => {
 };
 
 export const UserOverview = () => {
-  const iconsTable = {
-    bug: (
-      <div class="overview-icon new-bug">
-        <svg
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="50px"
-          height="50px"
-          viewBox="-5 0 100 100"
-          fill="#242731"
-        >
-          <path
-            d="M80.563,75.847c1.741-2.637,2.77-5.788,2.77-9.18C83.333,57.461,75.872,50,66.667,50c-0.18,0-0.346,0.046-0.524,0.052
-	c-0.13-0.904-0.234-1.822-0.413-2.695l10.94-4.531l-2.552-6.158l-10.222,4.238c-2.236-5.938-5.7-10.775-9.896-13.867l6.002-14.486
-	L53.845,10L48.04,24.011c-1.517-0.443-3.092-0.678-4.703-0.678s-3.188,0.234-4.704,0.678L32.829,10l-6.159,2.552l6.003,14.486
-	c-4.199,3.092-7.66,7.93-9.896,13.867l-10.225-4.238L10,42.825l10.944,4.531c-0.391,1.928-0.681,3.92-0.824,5.977H10.003V60H20.12
-	c0.144,2.058,0.434,4.05,0.824,5.977l-10.941,4.531l2.549,6.159l10.225-4.238C26.712,82.884,34.44,90,43.337,90
-	c6.019,0,11.49-3.288,15.628-8.64c2.314,1.218,4.909,1.973,7.702,1.973c3.395,0,6.546-1.028,9.183-2.773L85.286,90L90,85.286
-	L80.563,75.847z M43.337,30c4.346,0,8.353,2.845,11.357,7.383c-7.168,3.418-15.547,3.418-22.715,0C34.98,32.839,38.991,30,43.337,30
-	z M53.841,77.188c-2.891,3.821-6.563,6.146-10.504,6.146c-9.033,0-16.667-12.213-16.667-26.666c0-4.838,0.869-9.408,2.347-13.373
-	c9.037,4.369,19.597,4.375,28.643,0.007c0.947,2.539,1.608,5.345,1.986,8.301C53.962,54.251,50,59.98,50,66.667
-	C50,70.677,51.478,74.31,53.841,77.188z M66.667,76.667c-5.524,0-10-4.479-10-10c0-5.527,4.476-10,10-10c5.523,0,10,4.473,10,10
-	C76.667,72.188,72.19,76.667,66.667,76.667z"
-          />
-        </svg>
-      </div>
-    ),
-    help: (
-      <div class="overview-icon new-help-wanted">
-        <svg
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="50px"
-          height="50px"
-          viewBox="0 0 100 100"
-          fill="#242731"
-        >
-          <path
-            d="M76.667,9.999H23.333c-3.667,0-6.667,3-6.667,6.667v30c0,3.667,3,6.667,6.667,6.667h20L50,59.999l6.667-6.667h20
-	c3.665,0,6.666-3,6.666-6.667v-30C83.333,12.999,80.332,9.999,76.667,9.999z M76.667,46.666H53.906L50,50.57l-3.906-3.905h-22.76
-	v-30h53.333V46.666z"
-          />
-          <polygon points="50.107,39.999 44.889,39.999 49.89,23.332 55.11,23.332 " />
-          <path
-            d="M36.952,23.332l-5.98,5.977c-1.295,1.296-1.295,3.418,0,4.714l5.98,5.977l3.535-3.535l-4.798-4.798l4.798-4.798
-	L36.952,23.332z"
-          />
-          <path
-            d="M63.054,39.999l5.977-5.977c1.295-1.296,1.295-3.418,0-4.714l-5.977-5.977l-3.535,3.535l4.798,4.798l-4.798,4.798
-	L63.054,39.999z"
-          />
-          <path
-            d="M56.667,73.332c0,3.682-2.985,6.667-6.667,6.667c-3.678,0-6.667-2.985-6.667-6.667s2.988-6.666,6.667-6.666
-	C53.682,66.666,56.667,69.65,56.667,73.332z"
-          />
-          <path d="M63.333,89.999c0-3.682-2.984-6.667-6.666-6.667l-13.333,0.004c-3.682,0-6.667,2.984-6.667,6.666L63.333,89.999z" />
-          <path
-            d="M83.333,73.332c0,3.682-2.984,6.667-6.666,6.667c-3.679,0-6.667-2.985-6.667-6.667s2.988-6.666,6.667-6.666
-	C80.349,66.666,83.333,69.65,83.333,73.332z"
-          />
-          <path d="M90,89.999c0-3.682-2.985-6.667-6.667-6.667L70,83.336v6.666L90,89.999z" />
-          <path
-            d="M16.667,73.332c0,3.682,2.985,6.667,6.667,6.667c3.678,0,6.667-2.985,6.667-6.667s-2.988-6.666-6.667-6.666
-	C19.652,66.666,16.667,69.65,16.667,73.332z"
-          />
-          <path d="M10,89.999c0-3.682,2.985-6.667,6.667-6.667L30,83.336v6.666L10,89.999z" />
-        </svg>
-      </div>
-    ),
-    legacyFix: (
-      <div class="overview-icon new-legacy-fix">
-        <svg
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="50px"
-          height="50px"
-          viewBox="0 0 100 100"
-          fill="#242731"
-        >
-          <polygon points="66.667,36.667 61.953,41.38 70.573,50 61.95,58.62 66.663,63.333 80,50 " />
-          <polygon points="33.333,63.333 38.047,58.62 29.427,50 38.05,41.38 33.337,36.667 20,50 " />
-          <rect
-            x="19.835"
-            y="46.667"
-            transform="matrix(-0.2588 0.9659 -0.9659 -0.2588 111.2357 14.6421)"
-            width="60.33"
-            height="6.666"
-          />
-        </svg>
-      </div>
-    ),
-    documentation: (
-      <div class="overview-icon new-documentation">
-        <svg
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="50px"
-          height="50px"
-          viewBox="0 0 100 100"
-          fill="#242731"
-        >
-          <path
-            d="M83.333,13.333H16.667C13.001,13.333,10,16.331,10,20v60c0,3.665,3.001,6.667,6.667,6.667h66.666
-	C86.999,86.667,90,83.665,90,80V20C90,16.331,86.999,13.333,83.333,13.333z M83.333,80H16.667V20h66.666V80z"
-          />
-          <rect x="23.333" y="26.667" width="6.667" height="6.666" />
-          <rect x="36.667" y="26.667" width="20" height="6.666" />
-          <rect x="23.333" y="40" width="6.667" height="6.667" />
-          <rect x="36.667" y="40" width="40" height="6.667" />
-          <rect x="23.333" y="53.333" width="6.667" height="6.667" />
-          <rect x="36.667" y="53.333" width="26.666" height="6.667" />
-          <rect x="23.333" y="66.667" width="6.667" height="6.666" />
-          <rect x="36.667" y="66.667" width="33.333" height="6.666" />
-        </svg>
-      </div>
-    ),
-    suggestion: (
-      <div class="overview-icon new-suggestion">
-        <svg
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="50px"
-          height="50px"
-          viewBox="0 0 100 100"
-          enable-background="new 0 0 100 100"
-          fill="#242731"
-        >
-          <polygon points="62.57,36.667 57.421,36.667 64.088,10.001 69.244,10.001 " />
-          <path
-            d="M78.053,10.001l10.976,10.977c1.296,1.295,1.296,3.417,0,4.713L78.053,36.667l-3.535-3.535l9.798-9.798l-9.798-9.798
-	L78.053,10.001z"
-          />
-          <path
-            d="M48.609,36.667L37.633,25.691c-1.296-1.296-1.296-3.418,0-4.713l10.976-10.977l3.535,3.535l-9.798,9.798l9.798,9.798
-	L48.609,36.667z"
-          />
-          <path
-            d="M76.666,63.332H49.999c0-7.363-5.97-13.332-13.333-13.332h-20v-6.667H10v46.664h6.667v-4.297l13.531,3.379
-	c3.558,0.893,9.437,1.186,13.063,0.658l42.62-6.914c0.817-0.339,1.55-0.827,2.165-1.445c1.207-1.205,1.953-2.871,1.953-4.714
-	C89.999,69.302,84.028,63.332,76.666,63.332z M42.304,83.143c-2.77,0.41-7.77,0.15-10.491-0.527l-15.146-3.789v-22.16h20
-	c3.675,0,6.667,2.994,6.667,6.666H30v6.667h46.666c3.612,0,6.549,2.896,6.646,6.49L42.304,83.143z"
-          />
-        </svg>
-      </div>
-    ),
-    hotfix: (
-      <div class="overview-icon new-hotfix">
-        <svg
-          version="1.0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="50px"
-          height="50px"
-          viewBox="0 0 100 100"
-          fill="#242731"
-        >
-          <path d="M90,40H70V10L36.667,60h20v30L90,40z M49.121,53.333l14.212-21.315v14.649h14.209L63.333,67.981V53.333H49.121z" />
-          <rect x="10" y="53.333" width="20" height="6.667" />
-          <rect x="16.667" y="40" width="23.333" height="6.667" />
-          <rect x="30" y="26.667" width="16.667" height="6.667" />
-          <rect x="16.667" y="66.667" width="33.333" height="6.666" />
-        </svg>
-      </div>
-    ),
-  };
   return (
     <div class="user-overview">
       <div>

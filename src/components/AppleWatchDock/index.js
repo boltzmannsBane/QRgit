@@ -1,12 +1,12 @@
 import * as React from "react";
-import { motion, useMotionValue, AnimateSharedLayout } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { Item } from "./Item";
 import { device } from "./settings";
 
 import ExitButton from "../ExitButton";
 
 const iconsTable = [
-  <div class="overview-icon new-bug">
+ 
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
@@ -28,8 +28,8 @@ const iconsTable = [
 	C76.667,72.188,72.19,76.667,66.667,76.667z"
       />
     </svg>
-  </div>,
-  <div class="overview-icon new-help-wanted">
+,
+ 
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
@@ -67,8 +67,8 @@ const iconsTable = [
       />
       <path d="M10,89.999c0-3.682,2.985-6.667,6.667-6.667L30,83.336v6.666L10,89.999z" />
     </svg>
-  </div>,
-  <div class="overview-icon new-legacy-fix">
+,
+  
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
@@ -86,8 +86,8 @@ const iconsTable = [
         height="6.666"
       />
     </svg>
-  </div>,
-  <div class="overview-icon new-documentation">
+,
+  
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
@@ -108,8 +108,8 @@ const iconsTable = [
       <rect x="23.333" y="66.667" width="6.667" height="6.666" />
       <rect x="36.667" y="66.667" width="33.333" height="6.666" />
     </svg>
-  </div>,
-  <div class="overview-icon new-suggestion">
+,
+  
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
@@ -134,8 +134,8 @@ const iconsTable = [
 	c3.675,0,6.667,2.994,6.667,6.666H30v6.667h46.666c3.612,0,6.549,2.896,6.646,6.49L42.304,83.143z"
       />
     </svg>
-  </div>,
-  <div class="overview-icon new-hotfix">
+,
+  
     <svg
       version="1.0"
       xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +149,7 @@ const iconsTable = [
       <rect x="30" y="26.667" width="16.667" height="6.667" />
       <rect x="16.667" y="66.667" width="33.333" height="6.666" />
     </svg>
-  </div>,
+,
 ];
 
 const eventsTable = [
@@ -183,11 +183,10 @@ const colors = [
   "#F8DA30",
   "#7630F8",
   "#F7304D",
-  "#F85530",
+  "#7630F8",
   "#30F8DA",
   "#3091F8",
 ];
-
 const grid = new Array(10).fill([0, 1, 2, 3, 4, 5, 6, 7]);
 
 export function AppleWatchDock() {

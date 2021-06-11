@@ -99,8 +99,13 @@ h3 {
 @media screen and (max-width: 768px) {
   .menu {
     position: absolute;
+    height: 100%;
     left: -300px;
+    transition: .2s ease-in-out;
+    z-index: 100000;
   }
+  .menu[data-isopen="true"] {
+  left: 0; }
 }
 
 .menu > * > * + * {
@@ -419,7 +424,7 @@ p {
   margin-bottom: 10px;
   padding: 0.5rem 0.7rem;
   transition: 0.2s ease-in-out;
-  overflow: visible;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 414px) {
@@ -436,7 +441,7 @@ p {
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
   margin-top: 0.4rem;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
 @media screen and (max-width: 414px) {
@@ -480,6 +485,7 @@ p {
   bottom: 0.5rem;
   right: 0.7rem;
 }
+
 .comments .comments-counter p {
   color: var(--text-dark);
   font-size: var(--default-reg);
@@ -518,18 +524,21 @@ p {
   top: 0;
   left: 0;
   padding: 0 1.5rem;
-  transform: translateX(100%);
   background: var(--bg-dark);
-  transition: 0.5s ease-in-out;
-}
-
-.discussion[data-isopen="true"] {
-  transform: translateX(0%);
   z-index: 100;
 }
 
-.discussion[data-isopen="true"] .discussion-container {
-  animation: fade-in-without-sliding 0.5s linear both 0.5s;
+.discussion[data-isopen="true"] {
+  animation: slide-in 0.5s both;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
 }
 
 .discussion nav {
@@ -624,14 +633,31 @@ p {
   margin-left: 96px;
   margin-bottom: 1.5rem;
   padding: 1rem 1.5rem;
+  
 }
 
 .comment-body p {
   font-size: var(--default-reg);
   color: var(--text-light);
+  overflow: hidden;
+  max-width: 100%;
   line-height: 160%;
   margin-bottom: 0;
 }
+
+pre {
+  white-space: pre-wrap;
+}
+
+
+code {
+display: block;
+padding: .5rem;
+width: 100%; 
+max-width: 100%;
+background: var(--bg-dark);
+border-radius: 5px;
+margin: .5rem 0 .5rem 0;}
 
 @media screen and (max-width: 768px) {
   .comment-body {
@@ -647,7 +673,7 @@ p {
   min-height: 64px;
   margin-right: 32px;
   border-radius: 100%;
-  border: 3px solid var(--primary);
+
   background: var(--bg-light);
 }
 
@@ -1006,7 +1032,7 @@ p {
 
 .labels-row .active p {
   border-radius: 5px;
-  background: #f8da30;
+  background: rgba(255, 255, 255, 0.9);
   color: black;
 }
 
@@ -1058,7 +1084,7 @@ p {
   padding: 0.3rem 0.5rem;
   border-radius: 9px;
   font-weight: 500;
-  max-width: 10ch;
+  max-width: 50ch;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1094,8 +1120,7 @@ p {
 .git-topology {
   position: relative;
   transform: translateY(0);
-  max-width: 600px;
-  width: 600px;
+  width: 100%;
   height: 600px;
   display: flex;
   flex-direction: column;
@@ -1105,10 +1130,9 @@ p {
   background: black;
   border-radius: 15px;
   padding: 0 !important;
-  margin-right: 1rem;
 }
 
-@media screen and (max-width: 1130px) {
+@media screen and (max-width: 1440px) {
   .git-topology {
     margin-right: 0;
     width: 100%;
@@ -1249,7 +1273,7 @@ p {
 
 .branch.birth svg {
   bottom: -20px;
-  transform: scale(-1, 1);
+  transform: scale(-1, 1) rotate(-5deg);
 }
 
 .branch.reverse.birth svg {
@@ -1365,11 +1389,16 @@ p {
 }
 
 .commit-info .hash {
+font-weight: 600;
 }
 .commit-info > p {
   color: var(--text-dark);
   max-width: 60ch;
 }
+
+.commit-body pre {
+color: var(--text-light);
+font-size: var(--default-reg) !important; }
 
 .additions {
   margin-bottom: 1rem;
@@ -1521,6 +1550,7 @@ p {
   padding: 1.3rem 8px;
   margin-bottom: 1rem;
   display: flex;
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
@@ -1723,7 +1753,7 @@ p {
 .user-overview {
   position: relative;
   display: flex;
-  gap: 3rem;
+  gap: 2rem;
   flex-wrap: wrap;
   margin-bottom: 1rem;
   justify-content: center;
@@ -1748,6 +1778,12 @@ p {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 1430px) {
+  .user-overview > div:first-child {
+    width: 100%;
+  }
 }
 
 /* use this class later if u want */
@@ -1926,14 +1962,52 @@ p {
 .grid-item svg {
   fill: white;
 }
-@keyframes Blink {
-  0% {
-    opacity: 0.1;
-  }
-  100% {
-    opacity: 0.8;
-  }
+
+.avatar-container img {
+  object-fit: cover;
+  border-radius: 100%;
+  max-width: 64px;
+  max-height: 64px;
 }
+
+[class|=ball] {
+width: 16px;
+height: 16px;
+background: white;
+border-radius: 100%;
+ }
+ 
+.ball-two, .ball-three {
+margin-left: .5rem; }
+
+.releases-screen {
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-content: center;
+align-items: center;
+}
+
+.releases-screen h1 {
+text-align: center; 
+font-weight: 400;
+color: var(--text-dark);
+}
+
+.mobile-menu-btn {
+    font-size: var(--default-details);
+    font-weight: 500;
+    color: var(--text-light);
+    padding: 4px 14px;
+    margin-right: 0.5rem;
+    background: linear-gradient(
+180deg
+, #4b91f7 0%, #367af6 100%);
+    box-shadow: 0px 0.5px 1.5px rgb(54 122 246 / 25%);
+    border-radius: 6px;
+    cursor: pointer;
+    }
 
 @keyframes loader {
   0% {
